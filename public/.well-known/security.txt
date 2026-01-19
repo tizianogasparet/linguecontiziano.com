@@ -1,5 +1,33 @@
-Contact: mailto:tiziano@linguecontiziano.com
-Expires: 2027-01-01T00:00:00.000Z
-Acknowledgements: https://linguecontiziano.com/security-policy
-Preferred-Languages: en, it, es
-Canonical: https://linguecontiziano.com/.well-known/security.txt
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+# Security contact address
+Contact: mailto:tiziano@tizianogasparet.com
+
+# Public OpenPGP key for encrypted communication
+Encryption: https://linguecontiziano.com/public_key.asc
+
+# Security policy regarding vulnerability disclosure
+Policy: https://linguecontiziano.com/security-policy
+
+# File expiration date (one year from today)
+Expires: 2027-01-19T10:00:00z
+
+# Preferred languages for communication
+Preferred-Languages: it, es, en
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEz432c5nrihAIRpPfUEuDIDlJiRMFAmlt9xwACgkQUEuDIDlJ
+iRNtCRAAnoDAQa8ULYsestyJOOhc3qAF4cjHA0vdVgb+y/r7KJIqnk0PcjILDia1
+HZ2sCjWcpbOcVm/y36N6oYmG8YVAyxHHHt6DfiAFRDequKcB8Tcq7FUPiFzZJr1G
+GmbAJk837DM47boyiAh3YEnYmlwu04sjOiVqY2RUhseXOs0RwJZps7t4HPco2LDu
+X6hMYwR9PHxGAXM/WRIIF6cJiy9OF98GEBX4+11VGK2iFENOlgUcUroT1IN/vLoU
+IyqdOBK0Sj/Mh4oYXW1Fb5tJxWn8pmV+ddr/+aXH0u3OGg09uYLGQd3LXRAKdxGt
+B/1E8v8jtBvt1Y2dbsAeFooj/ppDfPh6wryCNwmVVzNTSTIftTZBbdG6FyB1I7HX
+RdOSKKlrL3ZpJ0o8RvVmVIxcWp0lgpWQaWyVNCBjQJm3QXgipKCnIBZIYR1acgxi
++vi52YfohUfI2GSx4dFlE2v3tQsi3gXWANP0Zle2jRvD1u+vdFxsHC9ryWyCZzjI
+rYvRo4R+xv3Qo80Ma3uaOrfOaKxBWyIPgrYQYl9MwfgE9eBxB38Xtp3p0Oh2q3T1
+8DV+pt3a2X2y0rKfEJeCXr6MNBvUU5v/ivijSyXu2rMFFN8tIcIkMsJHt/lvN5qf
+oDsGF+WhGgzEuuphSvoz7JRDhiSfms6Ho1l1rNvqGUu8jJV+e8w=
+=6sMn
+-----END PGP SIGNATURE-----

@@ -2,7 +2,7 @@
 Hash: SHA256
 
 # Security contact address
-Contact: mailto:tiziano@tizianogasparet.com
+Contact: mailto:security@linguecontiziano.com
 
 # Public OpenPGP key for encrypted communication
 Encryption: https://linguecontiziano.com/public_key.asc
@@ -17,17 +17,17 @@ Expires: 2027-01-19T10:00:00z
 Preferred-Languages: it, es, en
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEz432c5nrihAIRpPfUEuDIDlJiRMFAmlt9xwACgkQUEuDIDlJ
-iRNtCRAAnoDAQa8ULYsestyJOOhc3qAF4cjHA0vdVgb+y/r7KJIqnk0PcjILDia1
-HZ2sCjWcpbOcVm/y36N6oYmG8YVAyxHHHt6DfiAFRDequKcB8Tcq7FUPiFzZJr1G
-GmbAJk837DM47boyiAh3YEnYmlwu04sjOiVqY2RUhseXOs0RwJZps7t4HPco2LDu
-X6hMYwR9PHxGAXM/WRIIF6cJiy9OF98GEBX4+11VGK2iFENOlgUcUroT1IN/vLoU
-IyqdOBK0Sj/Mh4oYXW1Fb5tJxWn8pmV+ddr/+aXH0u3OGg09uYLGQd3LXRAKdxGt
-B/1E8v8jtBvt1Y2dbsAeFooj/ppDfPh6wryCNwmVVzNTSTIftTZBbdG6FyB1I7HX
-RdOSKKlrL3ZpJ0o8RvVmVIxcWp0lgpWQaWyVNCBjQJm3QXgipKCnIBZIYR1acgxi
-+vi52YfohUfI2GSx4dFlE2v3tQsi3gXWANP0Zle2jRvD1u+vdFxsHC9ryWyCZzjI
-rYvRo4R+xv3Qo80Ma3uaOrfOaKxBWyIPgrYQYl9MwfgE9eBxB38Xtp3p0Oh2q3T1
-8DV+pt3a2X2y0rKfEJeCXr6MNBvUU5v/ivijSyXu2rMFFN8tIcIkMsJHt/lvN5qf
-oDsGF+WhGgzEuuphSvoz7JRDhiSfms6Ho1l1rNvqGUu8jJV+e8w=
-=6sMn
+iQIzBAEBCAAdFiEEz432c5nrihAIRpPfUEuDIDlJiRMFAmluCNIACgkQUEuDIDlJ
+iROK0w/9F2Icjh6FJA/5MhJBpYesoZcxWKyeIojF0Ni3IRXp/cGVBvXkQTNsGIYT
+4BF7K5LsBB+Nt8CHfPFB3ewATaHoBrmiYbYcr33FnMdOImI7ZSF/AdLRibONit88
+Vl+VSeXs/MQLrv3VF9DqEcysrLocwA0mRw0PrxxaI286zph28KyeUJH116gSfM7b
+qb3s2+j1lCK5IxXVsTDrgSgwA7G2Hkg28lcubR0dTjTrI6TaD8IKiMew676u8ysv
+7/Xm8PcXZz3D7geMg+eKOrJajZaIeKFWbAh3SIaJMFhnINofJBQ7BYK6+z5JB9Hy
+Wp9MrjFi3AFks7JlTR48ZJ5ipsKlS0x5c7YiVvoCUvhUnT/sRrp55c3GMIENhsYV
+qZSUzBDbRaHZ0VtKCA/UrxadStciPf0bsK7shiGOSQ/wYLGOj0VCTwJRDxUUMIGb
+rMAV7P65ITLNKmoOhPOd2C58OOr2hB2CdICQ4+nAUKRU28yLmL66m28Pdr/Ns87Z
+Xr/t14ZfyhCVc0Ooqcg4BUk0XyzCKWgwBPTdbexuvxP5AIl0BZSje63IrPs0ZE6Y
+z4xKLCuXX9kbPyIwE7krtAcm9OQbWRcYHyJrbSvAHzUUqLrKLhVyKk43E+iK9V5B
+ZW9W1hJFO1NAt4+w/4WVNsOwIZiBqPHq4iuqRt9csRqsfl7+J0o=
+=Ne1S
 -----END PGP SIGNATURE-----

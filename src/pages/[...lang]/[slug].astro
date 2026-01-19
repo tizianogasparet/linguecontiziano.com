@@ -1,0 +1,54 @@
+---
+import { getCollection, render } from 'astro:content';
+import MainLayout from '@/components/layout/MainLayout.astro';
+import PostScene from '@/components/blog/PostScene.astro';
+import { routes, type RouteKey } from '@/i18n/routes';
+import { defaultLang } from '@/i18n/config';
+
+export async function getStaticPaths() {
+  const pages = await getCollection('pages');
+  const legal = await getCollection('legal');
+  
+  const allEntries = [
+    ...pages.map(e => ({ ...e, collectionName: 'pages' })),
+    ...legal.map(e => ({ ...e, collectionName: 'legal' }))
+  ];
+
+  return allEntries.map((entry) => {
+    const lang = entry.data.lang;
+    const routeKey = entry.data.translationId as RouteKey;
+    const slug = routes[lang]?.[routeKey];
+
+    if (!slug) return null;
+
+    return {
+      params: { 
+        lang: lang === defaultLang ? undefined : lang,
+        slug: slug 
+      },
+      props: { 
+        entry, 
+        lang, 
+        isLegal: entry.collectionName === 'legal' 
+      },
+    };
+  }).filter(Boolean);
+}
+
+const { entry, lang, isLegal } = Astro.props;
+const { Content } = await render(entry);
+
+// Soluzione errore TS: Verifica esistenza descrizione
+const description = 'description' in entry.data ? (entry.data as any).description : undefined;
+---
+
+<MainLayout 
+  lang={lang} 
+  title={entry.data.title} 
+  description={description}
+  isLegal={isLegal}
+>
+  <PostScene title={entry.data.title}>
+    <Content />
+  </PostScene>
+</MainLayout>

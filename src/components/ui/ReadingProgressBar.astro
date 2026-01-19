@@ -1,0 +1,24 @@
+---
+// src/components/ui/ReadingProgressBar.astro
+interface Props {
+  targetId?: string; // ID dell'elemento da tracciare, default 'main-content'
+}
+
+const { targetId = 'main-content' } = Astro.props;
+let progress = 0;
+
+if (typeof window !== 'undefined') {
+  const updateProgress = () => {
+    const el = document.getElementById(targetId);
+    if (!el) return;
+    const totalHeight = el.scrollHeight - window.innerHeight;
+    progress = totalHeight > 0 ? (window.scrollY / totalHeight) * 100 : 0;
+    const bar = document.getElementById('reading-progress-bar');
+    if (bar) bar.style.width = `${progress}%`;
+  };
+  window.addEventListener('scroll', updateProgress);
+}
+---
+<div id="reading-progress-container" class="fixed top-0 left-0 w-full h-1 bg-gray-700 z-[9999]">
+  <div id="reading-progress-bar" class="h-1 bg-gold w-0"></div>
+</div>

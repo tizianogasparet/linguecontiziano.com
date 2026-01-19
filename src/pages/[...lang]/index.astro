@@ -1,0 +1,39 @@
+---
+import { getCollection, render } from 'astro:content';
+import MainLayout from '@/components/layout/MainLayout.astro';
+import PostScene from '@/components/blog/PostScene.astro';
+import { supportedLanguages } from '@/i18n/config';
+
+export async function getStaticPaths() {
+  return supportedLanguages.map((lang) => {
+    // Per l'inglese (default), lang deve essere undefined per finire in root /
+    return {
+      params: { lang: lang === 'en' ? undefined : lang },
+      props: { lang },
+    };
+  });
+}
+
+const { lang } = Astro.props;
+
+// 1. Cerchiamo il contenuto della Home nella collezione 'pages'
+// Usiamo translationId: 'home' per trovare la versione corretta nelle 3 lingue
+const allPages = await getCollection('pages');
+const homeContent = allPages.find(p => p.data.translationId === 'home' && p.data.lang === lang);
+
+if (!homeContent) {
+  return Astro.redirect('/404');
+}
+
+const { Content } = await render(homeContent);
+---
+
+<MainLayout 
+  lang={lang} 
+  title={homeContent.data.title} 
+  description={homeContent.data.description}
+>
+  <PostScene title={homeContent.data.title}>
+    <Content />
+  </PostScene>
+</MainLayout>

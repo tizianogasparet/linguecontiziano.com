@@ -1,0 +1,78 @@
+---
+import MainLayout from '@/components/layout/MainLayout.astro';
+import { useTranslations } from '@/i18n/ui';
+import { defaultLang, supportedLanguages, type LangCode } from '@/i18n/config';
+import { getLocalizedPath } from '@/i18n/routes';
+
+// Rilevamento lingua dall'URL
+const { pathname } = Astro.url;
+const firstSegment = pathname.split('/').filter(Boolean)[0];
+
+const lang: LangCode = supportedLanguages.includes(firstSegment as LangCode) 
+  ? (firstSegment as LangCode) 
+  : defaultLang;
+
+const t = useTranslations(lang);
+
+// Link alla home localizzato
+const homeLink = getLocalizedPath(lang, 'home');
+
+const errorMessage: Record<LangCode, string> = {
+  it: 'PAGINA NON TROVATA',
+  en: 'PAGE NOT FOUND',
+  es: 'PÁGINA NO ENCONTRADA'
+};
+---
+
+<MainLayout
+  lang={lang}
+  title={`404 | ${t('site.title')}`}
+>
+  <div class="error-wrapper">
+    <div class="error-container">
+      <span class="error-code">404</span>
+      <h2 class="error-message">{errorMessage[lang]}</h2>
+      <div class="monolith-divider"></div>
+      <a href={homeLink} class="back-link">
+        {t('nav.home')} →
+      </a>
+    </div>
+  </div>
+</MainLayout>
+
+<style>
+  .error-wrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .error-code {
+    font-size: clamp(5rem, 20vw, 15rem);
+    font-weight: 900;
+    color: var(--gold-muted);
+    line-height: 1;
+    display: block;
+  }
+  .error-message {
+    font-style: italic;
+    font-weight: 900;
+    text-transform: uppercase;
+    font-size: clamp(1.5rem, 5vw, 3rem);
+    margin-top: -2rem;
+  }
+  .monolith-divider {
+    height: 2px;
+    background: var(--gold);
+    width: 60px;
+    margin: 2rem auto;
+  }
+  .back-link {
+    color: var(--gold);
+    text-decoration: none;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+</style>

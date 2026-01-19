@@ -1,0 +1,58 @@
+---
+import { useTranslations } from '@/i18n/ui';
+import type { LangCode } from '@/i18n/config';
+const { lang } = Astro.props;
+const t = useTranslations(lang as LangCode);
+---
+
+<div class="search-module">
+  <button id="search-trigger" class="search-btn" aria-label={t('nav.search')}>
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+  </button>
+
+  <div id="search-overlay" class="search-overlay">
+    <div class="search-modal">
+      <div class="modal-header">
+        <span class="modal-label">{t('nav.search')}</span>
+        <button id="search-close" class="close-btn">&times;</button>
+      </div>
+      <form action={`/${lang === 'en' ? '' : lang + '/'}search`} method="GET">
+        <input type="search" name="q" placeholder="STRATEGY KEYWORDS..." autocomplete="off" />
+      </form>
+    </div>
+  </div>
+</div>
+
+<style>
+  .search-btn { background: none; border: none; color: #ffffff; cursor: pointer; transition: 0.3s; display: flex; }
+  .search-btn:hover { color: #dfd090; }
+  .search-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: #000033; z-index: 2000;
+    display: flex; justify-content: center; padding-top: 15vh;
+    opacity: 0; visibility: hidden; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .search-overlay.is-active { opacity: 1; visibility: visible; }
+  .search-modal { width: 100%; max-width: 1000px; padding: 0 2rem; }
+  .modal-header { display: flex; justify-content: space-between; margin-bottom: 3rem; }
+  .modal-label { color: #dfd090; letter-spacing: 0.4em; font-weight: 900; text-transform: uppercase; }
+  .close-btn { color: #ffffff; font-size: 4rem; background: none; border: none; cursor: pointer; line-height: 0.5; }
+  input {
+    width: 100%; background: none; border: none; border-bottom: 3px solid #dfd090;
+    color: #ffffff; font-size: clamp(2rem, 6vw, 5rem); font-weight: 300;
+    text-transform: uppercase; padding-bottom: 1.5rem; outline: none;
+  }
+</style>
+
+<script>
+  const trigger = document.getElementById('search-trigger');
+  const close = document.getElementById('search-close');
+  const overlay = document.getElementById('search-overlay');
+
+  trigger?.addEventListener('click', () => {
+    overlay?.classList.add('is-active');
+    setTimeout(() => overlay?.querySelector('input')?.focus(), 100);
+  });
+
+  close?.addEventListener('click', () => overlay?.classList.remove('is-active'));
+</script>

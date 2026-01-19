@@ -1,0 +1,71 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import MainLayout from '@/components/layout/MainLayout.astro';
+import BlogCard from '@/components/blog/BlogCard.astro';
+import { routes, type RouteKey } from '@/i18n/routes';
+import { supportedLanguages, defaultLang, type LangCode } from '@/i18n/config';
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+  const categoryKeys: RouteKey[] = ['cat-autopsia', 'cat-sistemi', 'cat-psicologia', 'cat-esecuzione'];
+
+  return supportedLanguages.flatMap((lang) => {
+    const l = lang as LangCode;
+    return categoryKeys.map((catKey) => {
+      const categorySlug = routes[l][catKey];
+      const filteredPosts = allPosts
+        .filter(post => post.data.lang === l && post.data.category === catKey)
+        .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+      return {
+        params: { 
+          lang: l === defaultLang ? undefined : l,
+          category: categorySlug 
+        },
+        props: { posts: filteredPosts, lang: l, categoryKey: catKey }
+      };
+    });
+  });
+}
+
+const { posts, lang, categoryKey } = Astro.props;
+
+// Helper per generare l'URL del post senza errori TS
+function getPostHref(post: CollectionEntry<'blog'>, currentLang: LangCode) {
+  const postSlug = post.id.split('/').pop()?.replace(/\.(mdx|md)$/, '') || '';
+  const postCatKey = post.data.category as RouteKey;
+  const catSlug = routes[currentLang][postCatKey];
+  const prefix = currentLang === defaultLang ? '' : `/${currentLang}`;
+  return `${prefix}/blog/${catSlug}/${postSlug}`.replace(/\/+/g, '/');
+}
+---
+
+<MainLayout lang={lang} title={categoryKey}>
+  <div class="category-header">
+    <h1>{categoryKey}</h1>
+  </div>
+  
+  <section class="blog-grid">
+    {posts.map((post: CollectionEntry<'blog'>) => (
+      <BlogCard 
+        title={post.data.title}
+        description={post.data.description}
+        date={post.data.pubDate}
+        href={getPostHref(post, lang)}
+      />
+    ))}
+  </section>
+</MainLayout>
+
+<style>
+  .category-header { padding: 4rem 2.5rem 2rem; max-width: 1440px; margin: 0 auto; }
+  h1 { color: #dfd090; font-size: 3rem; text-transform: uppercase; letter-spacing: 0.1em; }
+  .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 2.5rem;
+    padding: 2rem 2.5rem 5rem;
+    max-width: 1440px;
+    margin: 0 auto;
+  }
+</style>

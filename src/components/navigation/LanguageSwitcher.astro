@@ -1,0 +1,51 @@
+---
+import { supportedLanguages, type LangCode } from '@/i18n/config';
+import { getLocalizedPath } from '@/i18n/routes';
+const { currentLang } = Astro.props;
+---
+
+<div class="lang-dropdown">
+  <button class="current-btn" aria-haspopup="true" aria-expanded="false">
+    {currentLang.toUpperCase()}
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m6 9 6 6 6-6"/></svg>
+  </button>
+  
+  <div class="dropdown-list">
+    {supportedLanguages.filter(l => l !== currentLang).map(lang => (
+      <a href={getLocalizedPath(lang as LangCode, 'home')}>
+        {lang.toUpperCase()}
+      </a>
+    ))}
+  </div>
+</div>
+
+<style>
+  .lang-dropdown { position: relative; z-index: 1200; }
+  
+  .current-btn {
+    color: #ffffff; font-size: 1.1rem; font-weight: 900; background: #000080; 
+    border: 2px solid #dfd090; cursor: pointer; display: flex; align-items: center; 
+    gap: 0.8rem; padding: 0.6rem 1.2rem; transition: 0.3s;
+  }
+  
+  .current-btn:hover { background: #dfd090; color: #000033; }
+  
+  .dropdown-list {
+    position: absolute; top: calc(100% + 5px); right: 0; min-width: 100%;
+    background: #000033; border: 2px solid #dfd090;
+    display: flex; flex-direction: column;
+    opacity: 0; visibility: hidden; transform: translateY(10px);
+    transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  }
+
+  .lang-dropdown:hover .dropdown-list { opacity: 1; visibility: visible; transform: translateY(0); }
+
+  .dropdown-list a {
+    color: #ffffff; padding: 1.2rem 1.5rem; font-size: 1rem; font-weight: 800;
+    text-decoration: none; border-bottom: 1px solid rgba(223, 208, 144, 0.2);
+    text-align: center; transition: 0.2s;
+  }
+
+  .dropdown-list a:hover { background: #000080; color: #dfd090; }
+</style>

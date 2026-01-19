@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Protezione cartelle sensibili
+Disallow: /_astro/
+Disallow: /api/
+
+# Sitemap generata dall'integrazione Astro
+Sitemap: https://linguecontiziano.com/sitemap-index.xml

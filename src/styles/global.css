@@ -1,0 +1,114 @@
+/* Variabili Globali - Rigore Cromatico */
+:root {
+  --bg-monolith: #000022; /* Navy ancora più profondo */
+  --bg-modal: rgba(0, 0, 34, 0.98);
+  --gold: #dfd090;
+  --gold-muted: rgba(223, 208, 144, 0.15);
+  --text-main: #ffffff;
+  --text-muted: rgba(255, 255, 255, 0.6);
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Reset Totale Professionale */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  background-color: var(--bg-monolith);
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+html::-webkit-scrollbar { display: none; }
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-monolith);
+  color: var(--text-main);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Rimozione stili nativi orribili per Search e Liste */
+input, button, select, textarea {
+  font-family: inherit;
+  font-size: inherit;
+  background: none;
+  border: none;
+  outline: none;
+  color: inherit;
+}
+
+/* Toglie la "X" nativa dagli input search su Chrome/Safari */
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration { display: none; }
+
+ul, ol { list-style: none; }
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+/* Layout Containers */
+.monolith-container {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  flex: 1; /* Spinge il footer in basso */
+}
+
+/* Typography Monolith */
+.monolith-title {
+  font-weight: 900;
+  font-style: italic;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-align: center;
+  letter-spacing: -0.05em;
+  font-size: clamp(3rem, 12vw, 8.5rem);
+  line-height: 0.8;
+}
+
+/* Helpers per Header e Navigation */
+.desktop-only {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .desktop-only { display: block; }
+}
+
+/* Animazione per Overlay Ricerca */
+.is-active {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  visibility: visible !important;
+}
+
+/* Utility per icone e bottoni */
+.icon-btn {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+}
+
+.icon-btn:hover {
+  color: var(--gold);
+}

@@ -1,0 +1,5 @@
+Contact: mailto:tiziano@linguecontiziano.com
+Expires: 2027-01-01T00:00:00.000Z
+Acknowledgements: https://linguecontiziano.com/security-policy
+Preferred-Languages: en, it, es
+Canonical: https://linguecontiziano.com/.well-known/security.txt

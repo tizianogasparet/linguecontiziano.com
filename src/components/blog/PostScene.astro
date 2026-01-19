@@ -1,0 +1,64 @@
+---
+import type { LangCode } from '../../i18n/config';
+import TranslationWarning from '../i18n/TranslationWarning.astro';
+
+interface Props {
+  title: string;
+  originalLang?: LangCode; // Opzionale: serve per il warning traduzione
+  currentLang?: LangCode;  // Opzionale: serve per il warning traduzione
+  categoryLabel?: string;
+  pubDate?: Date;
+}
+
+const { title, originalLang, currentLang, categoryLabel, pubDate } = Astro.props;
+
+// Formattazione data localizzata (opzionale)
+const formattedDate = pubDate ? pubDate.toLocaleDateString(currentLang || 'en', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+}) : null;
+---
+
+<article class="post-scene">
+  {originalLang && currentLang && originalLang !== currentLang && (
+    <TranslationWarning currentLang={currentLang} originalLang={originalLang} />
+  )}
+
+  <header class="post-header">
+    {categoryLabel && <span class="category-tag">{categoryLabel}</span>}
+    <h1 class="monolith-title">{title}</h1>
+    {formattedDate && <time class="post-date">{formattedDate}</time>}
+  </header>
+
+  <div class="prose-luxury">
+    <slot /> </div>
+</article>
+
+<style>
+  .post-scene {
+    width: 100%;
+    margin: 0 auto;
+  }
+  .post-header {
+    text-align: center;
+    margin-bottom: 6rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  .category-tag {
+    color: var(--gold);
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+  }
+  .post-date {
+    font-style: italic;
+    opacity: 0.5;
+    font-size: 0.9rem;
+    color: var(--white);
+  }
+</style>

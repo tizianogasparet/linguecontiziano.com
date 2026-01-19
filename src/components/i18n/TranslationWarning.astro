@@ -1,0 +1,44 @@
+---
+import type { LangCode } from '../../i18n/config';
+import { useTranslations } from '../../i18n/ui';
+
+interface Props {
+  currentLang: LangCode;
+  originalLang: LangCode;
+}
+
+const { currentLang, originalLang } = Astro.props;
+const t = useTranslations(currentLang);
+---
+
+{currentLang !== originalLang && (
+  <div class="translation-warning">
+    <span class="warning-icon" aria-hidden="true">⚠️</span>
+    <p class="translation-message">
+      {t('translation.warning').replace('{lang}', originalLang.toUpperCase())}
+    </p>
+  </div>
+)}
+
+<style>
+  .translation-warning {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    background: var(--gold-muted);
+    border: 1px solid var(--gold);
+    margin-bottom: 3rem;
+  }
+  .warning-icon {
+    font-size: 1.2rem;
+  }
+  .translation-message {
+    margin: 0;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+</style>

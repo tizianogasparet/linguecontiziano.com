@@ -1,0 +1,38 @@
+---
+import { getCollection } from 'astro:content';
+import MainLayout from '@/components/layout/MainLayout.astro';
+import BlogCard from '@/components/blog/BlogCard.astro';
+import { supportedLanguages } from '@/i18n/config';
+import { getLocalizedPath } from '@/i18n/routes';
+
+export async function getStaticPaths({ paginate }: any) {
+  const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+  
+  return supportedLanguages.flatMap((lang) => {
+    const langPosts = allPosts
+      .filter(post => post.data.lang === lang)
+      .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+    return paginate(langPosts, {
+      params: { lang: lang === 'en' ? undefined : lang },
+      pageSize: 10,
+      props: { lang }
+    });
+  });
+}
+
+const { page, lang } = Astro.props;
+---
+
+<MainLayout lang={lang} title="Blog">
+  <section class="blog-grid">
+    {page.data.map((post: any) => (
+      <BlogCard 
+        title={post.data.title}
+        description={post.data.description}
+        date={post.data.pubDate}
+        href={getLocalizedPath(lang, 'blog', post.id.split('/').pop()?.replace(/\.mdx$/, ''))}
+      />
+    ))}
+  </section>
+</MainLayout>

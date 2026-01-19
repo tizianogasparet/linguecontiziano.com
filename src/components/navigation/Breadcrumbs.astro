@@ -1,0 +1,19 @@
+---
+// src/components/navigation/Breadcrumbs.astro
+interface Crumb {
+  label: string;
+  href?: string;
+}
+
+const { crumbs = [] } = Astro.props as { crumbs: Crumb[] };
+---
+<nav aria-label="Breadcrumb" class="breadcrumb">
+  <ol>
+    {crumbs.map((crumb, index) => (
+      <li>
+        {crumb.href ? <a href={crumb.href}>{crumb.label}</a> : <span>{crumb.label}</span>}
+        {index < crumbs.length - 1 && <span class="separator">/</span>}
+      </li>
+    ))}
+  </ol>
+</nav>

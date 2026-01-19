@@ -1,0 +1,19 @@
+---
+// src/components/navigation/BlogCategoryNav.astro
+interface Props {
+  categories: { key: string; label: string; href: string }[];
+  activeCategory?: string;
+}
+
+const { categories = [], activeCategory } = Astro.props;
+---
+<nav class="blog-category-nav">
+  {categories.map(cat => (
+    <a
+      href={cat.href}
+      class={cat.key === activeCategory ? 'active' : ''}
+    >
+      {cat.label}
+    </a>
+  ))}
+</nav>

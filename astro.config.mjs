@@ -1,40 +1,50 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
-import sitemap from "@astrojs/sitemap";
-import node from "@astrojs/node";
-import mdx from "@astrojs/mdx";
+import sitemap from '@astrojs/sitemap';
+import node from '@astrojs/node';
+import mdx from '@astrojs/mdx';
+
+/**
+ * ⚠️ FILE IMMUTABILE
+ * NON deve conoscere:
+ * - lingue specifiche
+ * - pagine
+ * - categorie
+ *
+ * Le lingue sono importate come dato.
+ */
+
+// IMPORT STATICO (Node-safe)
+import { supportedLanguages, defaultLang } from './src/i18n/config.ts';
 
 export default defineConfig({
   site: 'https://linguecontiziano.com',
-  
+
   i18n: {
-    locales: ["it", "en", "es"],
-    defaultLocale: "en",
+    locales: supportedLanguages,
+    defaultLocale: defaultLang,
     routing: {
       prefixDefaultLocale: false,
-      fallbackType: "redirect"
-    }
+      fallbackType: 'redirect',
+    },
   },
 
   integrations: [
-    sitemap({
-      // Esclude le pagine legali dalla sitemap per un SEO pulito
-      filter: (page) => 
-        !page.includes('privacy-policy') && 
-        !page.includes('cookie-policy') && 
-        !page.includes('termini-e-condizioni') &&
-        !page.includes('terms-and-conditions') &&
-        !page.includes('politica-de-privacidad')
-    }), 
-    mdx()
+    /**
+     * Sitemap:
+     * - Rispetta automaticamente `sitemap: false` nel frontmatter
+     * - Zero filtri hardcoded
+     * - Zero manutenzione futura
+     */
+    sitemap(),
+    mdx(),
   ],
 
   adapter: node({
-    mode: "standalone"
+    mode: 'standalone',
   }),
 
-  // Ottimizzazioni build
   build: {
-    inlineStylesheets: 'always'
-  }
+    inlineStylesheets: 'always',
+  },
 });

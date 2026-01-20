@@ -15,7 +15,7 @@ export const ui = {
     'footer.privacy': 'PRIVACY POLICY',
     'footer.cookie': 'COOKIE POLICY',
     'footer.terms': 'TERMS AND CONDITIONS',
-    'security': 'SECURITY POLICY', // Aggiunta
+    'security': 'SECURITY POLICY',
     'contact.email': 'tiziano@linguecontiziano.com',
     'translation.warning': 'This page is automatically translated from {lang}.',
     'cat-autopsia': 'ERROR AUTOPSY',
@@ -37,7 +37,7 @@ export const ui = {
     'footer.privacy': 'PRIVACY POLICY',
     'footer.cookie': 'COOKIE POLICY',
     'footer.terms': 'TERMINI E CONDIZIONI',
-    'security': 'SICUREZZA', // Aggiunta
+    'security': 'SICUREZZA',
     'contact.email': 'tiziano@linguecontiziano.com',
     'translation.warning': 'Questa pagina è tradotta automaticamente da {lang}.',
     'cat-autopsia': 'AUTOPSIA DELL’ERRORE',
@@ -59,7 +59,7 @@ export const ui = {
     'footer.privacy': 'POLÍTICA DE PRIVACIDAD',
     'footer.cookie': 'POLÍTICA DE COOKIES',
     'footer.terms': 'TÉRMINOS Y CONDICIONES',
-    'security': 'SEGURIDAD', // Aggiunta
+    'security': 'SEGURIDAD',
     'contact.email': 'tiziano@linguecontiziano.com',
     'translation.warning': 'Esta página está traducida automáticamente desde {lang}.',
     'cat-autopsia': 'AUTOPSIA DEL ERROR',

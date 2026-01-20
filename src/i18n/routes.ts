@@ -6,22 +6,31 @@ export type RouteKey =
 
 export const routes: Record<LangCode, Record<RouteKey, string>> = {
   it: {
-    home: '', blog: 'blog', about: 'chi-sono', privacy: 'privacy-policy',
-    cookie: 'cookie-policy', terms: 'termini-e-condizioni', security: 'security-policy',
-    'cat-autopsia': 'autopsia-dell-errore', 'cat-sistemi': 'sistemi-di-disciplina',
-    'cat-psicologia': 'psicologia-del-conflitto', 'cat-esecuzione': 'esecuzione-immediata',
+    home: '', blog: 'blog', about: 'chi-sono',
+    privacy: 'privacy-policy', cookie: 'cookie-policy',
+    terms: 'termini-e-condizioni', security: 'security-policy',
+    'cat-autopsia': 'autopsia-dell-errore',
+    'cat-sistemi': 'sistemi-di-disciplina',
+    'cat-psicologia': 'psicologia-del-conflitto',
+    'cat-esecuzione': 'esecuzione-immediata',
   },
   en: {
-    home: '', blog: 'blog', about: 'about', privacy: 'privacy-policy',
-    cookie: 'cookie-policy', terms: 'terms-and-conditions', security: 'security-policy',
-    'cat-autopsia': 'error-autopsy', 'cat-sistemi': 'discipline-systems',
-    'cat-psicologia': 'conflict-psychology', 'cat-esecuzione': 'immediate-execution',
+    home: '', blog: 'blog', about: 'about',
+    privacy: 'privacy-policy', cookie: 'cookie-policy',
+    terms: 'terms-and-conditions', security: 'security-policy',
+    'cat-autopsia': 'error-autopsy',
+    'cat-sistemi': 'discipline-systems',
+    'cat-psicologia': 'conflict-psychology',
+    'cat-esecuzione': 'immediate-execution',
   },
   es: {
-    home: '', blog: 'blog', about: 'sobre-mi', privacy: 'politica-de-privacidad',
-    cookie: 'politica-de-cookies', terms: 'terminos-y-condiciones', security: 'politica-de-seguridad',
-    'cat-autopsia': 'autopsia-del-error', 'cat-sistemi': 'sistemas-de-disciplina',
-    'cat-psicologia': 'psicologia-del-conflicto', 'cat-esecuzione': 'ejecucion-inmediata',
+    home: '', blog: 'blog', about: 'sobre-mi',
+    privacy: 'politica-de-privacidad', cookie: 'politica-de-cookies',
+    terms: 'terminos-y-condiciones', security: 'politica-de-seguridad',
+    'cat-autopsia': 'autopsia-del-error',
+    'cat-sistemi': 'sistemas-de-disciplina',
+    'cat-psicologia': 'psicologia-del-conflicto',
+    'cat-esecuzione': 'ejecucion-inmediata',
   }
 };
 

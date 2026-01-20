@@ -1,68 +1,136 @@
 ---
-// src/components/blog/PostScene.astro
-import type { LangCode } from '../../i18n/config';
-import TranslationWarning from '../i18n/TranslationWarning.astro';
-
 interface Props {
   title: string;
-  originalLang?: LangCode;
-  currentLang?: LangCode;
   categoryLabel?: string;
   pubDate?: Date;
 }
 
-const { title, originalLang, currentLang, categoryLabel, pubDate } = Astro.props;
+const { title, categoryLabel, pubDate } = Astro.props;
 
-// Formattazione data localizzata
-const formattedDate = pubDate
-  ? pubDate.toLocaleDateString(currentLang || 'en', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    })
-  : null;
+// Formattazione data localizzata (opzionale, o usiamo stringa passata)
+const dateString = pubDate ? pubDate.toLocaleDateString(undefined, {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+}) : null;
 ---
 
 <article class="post-scene">
-  {originalLang && currentLang && originalLang !== currentLang && (
-    <TranslationWarning currentLang={currentLang} originalLang={originalLang} />
-  )}
-
   <header class="post-header">
-    {categoryLabel && <span class="category-tag">{categoryLabel}</span>}
-    <h1 class="monolith-title">{title}</h1>
-    {formattedDate && <time class="post-date">{formattedDate}</time>}
+    <div class="article-container">
+      {categoryLabel && <span class="post-category">{categoryLabel}</span>}
+      <h1 class="post-title">{title}</h1>
+      {dateString && <time class="post-date">{dateString}</time>}
+      <div class="header-divider"></div>
+    </div>
   </header>
 
-  <div class="prose-luxury">
-    <slot />
+  <div class="article-container">
+    <div class="post-content">
+      <slot />
+    </div>
   </div>
 </article>
 
 <style>
   .post-scene {
-    width: 100%;
-    margin: 0 auto;
+    padding-bottom: 10rem;
   }
+
   .post-header {
+    padding: 15vh 0 5vh;
     text-align: center;
-    margin-bottom: 6rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.5rem;
   }
-  .category-tag {
+
+  .post-category {
+    display: block;
     color: var(--gold);
-    font-weight: 800;
-    letter-spacing: 0.2em;
+    font-weight: 900;
+    letter-spacing: 0.4em;
     text-transform: uppercase;
     font-size: 0.8rem;
+    margin-bottom: 1.5rem;
   }
+
+  .post-title {
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 900;
+    line-height: 1;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    letter-spacing: -0.02em;
+  }
+
   .post-date {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .header-divider {
+    width: 60px;
+    height: 4px;
+    background: var(--gold);
+    margin: 3rem auto 0;
+  }
+
+  /* STILI DEL CONTENUTO (Markdown) */
+  .post-content {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .post-content :global(p) { margin-bottom: 2rem; }
+
+  .post-content :global(h2) {
+    font-size: 2.2rem;
+    color: var(--gold);
+    margin: 4rem 0 1.5rem;
+    text-transform: uppercase;
+    font-weight: 900;
+    line-height: 1.1;
+  }
+
+  .post-content :global(h3) {
+    font-size: 1.6rem;
+    margin: 3rem 0 1rem;
+    text-transform: uppercase;
+    font-weight: 800;
+  }
+
+  .post-content :global(blockquote) {
+    border-left: 4px solid var(--gold);
+    padding: 1.5rem 2rem;
+    background: var(--gold-muted);
     font-style: italic;
-    opacity: 0.5;
-    font-size: 0.9rem;
-    color: var(--white);
+    margin: 3rem 0;
+    font-size: 1.4rem;
+  }
+
+  .post-content :global(strong) {
+    color: var(--gold);
+    font-weight: 800;
+  }
+
+  .post-content :global(ul) {
+    margin: 2rem 0;
+    list-style: none;
+  }
+
+  .post-content :global(li) {
+    margin-bottom: 1rem;
+    padding-left: 1.5rem;
+    position: relative;
+  }
+
+  .post-content :global(li::before) {
+    content: "—";
+    position: absolute;
+    left: 0;
+    color: var(--gold);
   }
 </style>

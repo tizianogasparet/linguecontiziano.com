@@ -1,49 +1,105 @@
 ---
-// src/components/blog/BlogCard.astro
 interface Props {
   title: string;
-  description: string;
+  description?: string;
   href: string;
   date: Date;
 }
 
 const { title, description, href, date } = Astro.props;
 
-// Formattazione data locale
-const formattedDate = date.toLocaleDateString();
+const formattedDate = date.toLocaleDateString(undefined, {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric'
+});
 ---
 
-<article class="blog-card">
-  <time datetime={date.toISOString()}>{formattedDate}</time>
-  <h3><a href={href}>{title}</a></h3>
-  <p>{description}</p>
-</article>
+<a href={href} class="blog-card">
+  <article>
+    <div class="card-meta">
+      <time datetime={date.toISOString()}>{formattedDate}</time>
+    </div>
+    <h3 class="card-title">{title}</h3>
+    {description && <p class="card-desc">{description}</p>}
+    <div class="card-footer">
+      <span class="read-more">DISCOVER →</span>
+    </div>
+  </article>
+</a>
 
 <style>
   .blog-card {
-    padding: 1.5rem;
-    border: 1px solid var(--gold-muted);
-    transition: transform 0.2s;
-    border-radius: 4px;
-    background-color: var(--bg-dark);
+    display: block;
+    padding: 2.5rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(223, 208, 144, 0.1);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    height: 100%;
   }
+
   .blog-card:hover {
-    transform: translateY(-4px);
+    background: rgba(223, 208, 144, 0.03);
+    border-color: var(--gold);
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
   }
+
+  .card-meta {
+    margin-bottom: 1.5rem;
+  }
+
   time {
+    font-family: var(--font-mono);
     font-size: 0.75rem;
     color: var(--gold);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
   }
-  h3 a {
-    color: var(--white);
-    text-decoration: none;
+
+  .card-title {
+    font-size: 1.6rem;
+    font-weight: 900;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    color: var(--text-main);
     transition: color 0.3s;
   }
-  h3 a:hover {
+
+  .blog-card:hover .card-title {
     color: var(--gold);
   }
-  p {
-    color: var(--white);
-    margin-top: 0.5rem;
+
+  .card-desc {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin-bottom: 2rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card-footer {
+    margin-top: auto;
+  }
+
+  .read-more {
+    font-size: 0.75rem;
+    font-weight: 900;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: all 0.3s;
+    display: inline-block;
+  }
+
+  .blog-card:hover .read-more {
+    opacity: 1;
+    transform: translateX(0);
   }
 </style>

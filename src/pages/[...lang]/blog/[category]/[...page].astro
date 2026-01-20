@@ -1,0 +1,113 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import MainLayout from '@/components/layout/MainLayout.astro';
+import BlogCard from '@/components/blog/BlogCard.astro';
+import { useTranslations } from '@/i18n/ui';
+import { routes, type RouteKey } from '@/i18n/routes';
+import { supportedLanguages, defaultLang, type LangCode } from '@/i18n/config';
+
+export async function getStaticPaths({ paginate }: any) {
+  const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+  const categoryKeys: RouteKey[] = ['cat-autopsia', 'cat-sistemi', 'cat-psicologia', 'cat-esecuzione'];
+
+  return supportedLanguages.flatMap((lang) => {
+    const l = lang as LangCode;
+    
+    return categoryKeys.flatMap((catKey) => {
+      const categorySlug = routes[l][catKey];
+      const filteredPosts = allPosts
+        .filter(post => post.data.lang === l && post.data.category === catKey)
+        .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+      // Generiamo la paginazione specifica per questa lingua e questa categoria
+      return paginate(filteredPosts, {
+        params: { 
+          lang: l === defaultLang ? undefined : l,
+          category: categorySlug 
+        },
+        pageSize: 12,
+        props: { lang: l, categoryKey: catKey }
+      });
+    });
+  });
+}
+
+const { page, lang, categoryKey } = Astro.props;
+const t = useTranslations(lang as LangCode);
+
+// Helper URL identico a quello del blog principale per coerenza
+function getPostHref(post: CollectionEntry<'blog'>, currentLang: LangCode) {
+  const postSlug = post.id.split('/').pop()?.replace(/\.(mdx|md)$/, '') || '';
+  const postCatKey = post.data.category as RouteKey;
+  const catSlug = routes[currentLang][postCatKey];
+  const prefix = currentLang === defaultLang ? '' : `/${currentLang}`;
+  return `${prefix}/blog/${catSlug}/${postSlug}`.replace(/\/+/g, '/');
+}
+---
+
+<MainLayout lang={lang} title={`${t(categoryKey as any)} | Blog`}>
+  <div class="monolith-container">
+    <header class="category-header animate-fade">
+      <span class="section-label">{t('nav.categories')}</span>
+      <h1 class="monolith-title">{t(categoryKey as any)}</h1>
+    </header>
+
+    <section class="blog-grid">
+      {page.data.map((post: CollectionEntry<'blog'>) => (
+        <BlogCard 
+          title={post.data.title}
+          description={post.data.description}
+          date={post.data.pubDate}
+          href={getPostHref(post, lang)}
+        />
+      ))}
+    </section>
+
+    {page.lastPage > 1 && (
+      <nav class="pagination">
+        {page.url.prev ? (
+          <a href={page.url.prev} class="nav-link">← PREV</a>
+        ) : <span class="disabled">←</span>}
+        
+        <div class="page-counter">
+          <span class="current">{page.currentPage}</span>
+          <span class="sep">/</span>
+          <span class="total">{page.lastPage}</span>
+        </div>
+
+        {page.url.next ? (
+          <a href={page.url.next} class="nav-link">NEXT →</a>
+        ) : <span class="disabled">→</span>}
+      </nav>
+    )}
+  </div>
+</MainLayout>
+
+<style>
+  /* Usiamo lo stesso stile del blog per coerenza visiva */
+  .category-header {
+    padding: 12vh 0 6vh;
+    border-bottom: 1px solid var(--gold-muted);
+    margin-bottom: 4rem;
+  }
+  .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 400px), 1fr));
+    gap: 3rem;
+  }
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+    padding: 5rem 0;
+    font-weight: 900;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .nav-link { color: var(--gold); }
+  .disabled { opacity: 0.2; }
+  .page-counter { display: flex; align-items: center; gap: 0.5rem; }
+  .current { color: var(--gold); }
+  .total { color: var(--text-muted); font-size: 0.9rem; }
+</style>

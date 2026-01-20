@@ -1,0 +1,57 @@
+---
+import { useTranslations } from '@/i18n/ui';
+import type { LangCode } from '@/i18n/config';
+import { routes, type RouteKey } from '@/i18n/routes';
+
+interface Props {
+  lang: LangCode;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const categoryKeys: RouteKey[] = ['cat-autopsia', 'cat-sistemi', 'cat-psicologia', 'cat-esecuzione'];
+
+const prefix = lang === 'en' ? '' : `/${lang}`;
+---
+
+<div class="dropdown">
+  <button class="dropdown-trigger">
+    {t('nav.categories')}
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m6 9 6 6 6-6"/></svg>
+  </button>
+  <div class="dropdown-content">
+    {categoryKeys.map(key => (
+      <a href={`${prefix}/blog/${routes[lang][key]}`}>
+        {t(key as any)}
+      </a>
+    ))}
+  </div>
+</div>
+
+<style>
+  .dropdown { position: relative; display: inline-block; }
+  .dropdown-trigger {
+    font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--text-main); cursor: pointer; display: flex; align-items: center; gap: 0.5rem;
+  }
+  .dropdown-content {
+    position: absolute; top: 100%; left: 0; background: var(--bg-monolith);
+    border: 1px solid var(--gold-muted); min-width: 280px; z-index: 100;
+    opacity: 0; visibility: hidden; transform: translateY(10px);
+    transition: var(--transition); padding: 1rem 0;
+  }
+  .dropdown:hover .dropdown-content { opacity: 1; visibility: visible; transform: translateY(0); }
+  
+  .dropdown-content a {
+    display: block; padding: 0.8rem 1.5rem; font-size: 0.8rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.1em; border-left: 0px solid var(--gold);
+  }
+  .dropdown-content a:hover {
+    background: var(--gold-muted); color: var(--gold); border-left-width: 4px;
+  }
+
+  @media (max-width: 1024px) {
+    .dropdown-content { position: static; opacity: 1; visibility: visible; border: none; padding-left: 1rem; transform: none; display: none;}
+    .dropdown.is-open .dropdown-content { display: block; }
+  }
+</style>

@@ -1,54 +1,84 @@
 ---
 import { getLocalizedPath } from '@/i18n/routes';
 import { useTranslations } from '@/i18n/ui';
-import LanguageSwitcher from '../navigation/LanguageSwitcher.astro';
-import Search from '../search/Search.astro';
+import Dropdown from '@/components/navigation/Dropdown.astro'; // Componente helper per i menu a tendina
+import Search from '@/components/search/Search.astro';
 import type { LangCode } from '@/i18n/config';
 
+interface Props { lang: LangCode; }
 const { lang } = Astro.props;
-const t = useTranslations(lang as LangCode);
+const t = useTranslations(lang);
 
-const navLinks = [
-  { key: 'home', label: t('nav.home') },
-  { key: 'blog', label: t('nav.blog') },
-  { key: 'about', label: t('nav.about') },
-] as const;
+// Definizione categorie per il dropdown
+const categories = [
+  { key: 'cat-autopsia', label: t('cat-autopsia') },
+  { key: 'cat-sistemi', label: t('cat-sistemi') },
+  { key: 'cat-psicologia', label: t('cat-psicologia') },
+  { key: 'cat-esecuzione', label: t('cat-esecuzione') },
+];
 ---
 
 <header class="main-header">
   <div class="header-container">
-    <div class="header-left">
-      <a href={getLocalizedPath(lang as LangCode, 'home')} class="logo">{t('nav.logo')}</a>
-    </div>
-
-    <nav class="header-center desktop-only">
+    <nav class="desktop-only">
       <ul class="nav-list">
-        {navLinks.map(({ key, label }) => (
-          <li>
-            <a href={getLocalizedPath(lang as LangCode, key as any)} class="nav-link">{label}</a>
-          </li>
-        ))}
+        <li><a href={getLocalizedPath(lang, 'home')} class="nav-link">{t('nav.home')}</a></li>
+        <li>
+          <Dropdown label={t('nav.categories')} items={categories} lang={lang} type="category" />
+        </li>
+        <li><a href={getLocalizedPath(lang, 'blog')} class="nav-link">{t('nav.blog')}</a></li>
       </ul>
     </nav>
 
-    <div class="header-right">
-      <div class="actions-group">
-        <LanguageSwitcher currentLang={lang as LangCode} />
-        <div class="vertical-divider"></div>
-        <Search lang={lang as LangCode} />
-      </div>
+    <a href={getLocalizedPath(lang, 'home')} class="logo">
+      {t('nav.logo')}
+    </a>
+
+    <div class="header-right desktop-only">
+      <Dropdown label={lang.toUpperCase()} type="language" lang={lang} />
+      <div class="vertical-divider"></div>
+      <Search lang={lang} />
     </div>
   </div>
 </header>
 
 <style>
-.main-header { height:100px; background:#000033; border-bottom:2px solid #dfd090; display:flex; align-items:center; position:sticky; top:0; z-index:1000; }
-.header-container { width:100%; max-width:1440px; margin:0 auto; padding:0 2.5rem; display:flex; justify-content:space-between; align-items:center; }
-.logo { color:#dfd090; font-weight:900; letter-spacing:0.3em; text-transform:uppercase; font-size:1.25rem; text-decoration:none; }
-.nav-list { display:flex; gap:4rem; list-style:none; margin:0; padding:0; }
-.nav-link { color:#fff; font-size:1rem; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; text-decoration:none; transition:0.3s; }
-.nav-link:hover { color:#dfd090; }
-.actions-group { display:flex; align-items:center; gap:2rem; }
-.vertical-divider { width:1px; height:30px; background:rgba(223,208,144,0.3); }
-@media (max-width:1023px) { .desktop-only { display:none; } }
+  .main-header {
+    height: 100px;
+    background: var(--bg-monolith);
+    border-bottom: 2px solid var(--gold);
+    display: flex;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+  .header-container {
+    width: 100%; max-width: 1440px; margin: 0 auto; padding: 0 2.5rem;
+    display: flex; justify-content: space-between; align-items: center;
+    position: relative;
+  }
+  .logo {
+    color: var(--gold); font-weight: 900; letter-spacing: 0.3em;
+    text-transform: uppercase; font-size: 1.25rem; text-decoration: none;
+    transition: var(--transition);
+  }
+  
+  /* Desktop Nav */
+  .nav-list { display: flex; gap: 3rem; align-items: center; }
+  .nav-link {
+    color: var(--text-main); font-size: 0.9rem; font-weight: 800; letter-spacing: 0.15em;
+    text-transform: uppercase; transition: 0.3s;
+  }
+  .nav-link:hover { color: var(--gold); }
+  
+  .header-right { display: flex; align-items: center; gap: 1.5rem; }
+  .vertical-divider { width: 1px; height: 25px; background: var(--gold-muted); }
+
+  @media (max-width: 1023px) {
+    .desktop-only { display: none; }
+    .header-container { justify-content: center; }
+    .main-header { height: 70px; }
+    .logo { font-size: 1rem; letter-spacing: 0.15em; }
+  }
 </style>

@@ -22,6 +22,9 @@ export const ui = {
     'cat-sistemi': 'DISCIPLINE SYSTEMS',
     'cat-psicologia': 'CONFLICT PSYCHOLOGY',
     'cat-esecuzione': 'IMMEDIATE EXECUTION',
+    'search.placeholder': 'STRATEGY KEYWORDS...',
+    'search.hint': 'PRESS ENTER TO SEARCH',
+    'search.close': 'CLOSE',
   },
   it: {
     'site.title': 'Tiziano Gasparet | Strategia',
@@ -44,6 +47,9 @@ export const ui = {
     'cat-sistemi': 'SISTEMI DI DISCIPLINA',
     'cat-psicologia': 'PSICOLOGIA DEL CONFLITTO',
     'cat-esecuzione': 'ESECUZIONE IMMEDIATA',
+    'search.placeholder': 'PAROLE CHIAVE...',
+    'search.hint': 'PREMI INVIO PER CERCARE',
+    'search.close': 'CHIUDI',
   },
   es: {
     'site.title': 'Tiziano Gasparet | Estrategia',
@@ -66,6 +72,9 @@ export const ui = {
     'cat-sistemi': 'SISTEMAS DE DISCIPLINA',
     'cat-psicologia': 'PSICOLOGÍA DEL CONFLICTO',
     'cat-esecuzione': 'EJECUCIÓN INMEDIATA',
+    'search.placeholder': 'PALABRAS CLAVE...',
+    'search.hint': 'PRESIONE ENTER PARA BUSCAR',
+    'search.close': 'CERRAR',
   },
 } as const;
 

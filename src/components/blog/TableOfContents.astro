@@ -1,9 +1,11 @@
 ---
+// src/components/blog/TableOfContents.astro
 interface Props {
   headings: { depth: number; slug: string; text: string }[];
 }
 
 const { headings } = Astro.props;
+
 // Filtriamo solo H2 e H3 per non intasare l'indice
 const filteredHeadings = headings.filter(h => h.depth > 1 && h.depth < 4);
 ---

@@ -1,58 +1,181 @@
 ---
 import { useTranslations } from '@/i18n/ui';
 import type { LangCode } from '@/i18n/config';
+
+interface Props {
+  lang: LangCode;
+}
+
 const { lang } = Astro.props;
-const t = useTranslations(lang as LangCode);
+const t = useTranslations(lang);
+
+/**
+ * LOGICA PATH AGNOSTICA
+ * Calcola l'indirizzo della search basandosi sulla lingua corrente.
+ * Se 'en' (default), produce /search
+ * Altrimenti produce /[lang]/search
+ */
+const isDefault = lang === 'en'; 
+const searchAction = isDefault ? '/search' : `/${lang}/search`;
 ---
 
 <div class="search-module">
   <button id="search-trigger" class="search-btn" aria-label={t('nav.search')}>
-    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+      <circle cx="11" cy="11" r="8"></circle>
+      <path d="m21 21-4.3-4.3"></path>
+    </svg>
   </button>
 
   <div id="search-overlay" class="search-overlay">
     <div class="search-modal">
       <div class="modal-header">
         <span class="modal-label">{t('nav.search')}</span>
-        <button id="search-close" class="close-btn">&times;</button>
+        <button id="search-close" class="close-btn" aria-label="Close">&times;</button>
       </div>
-      <form action={`/${lang === 'en' ? '' : lang + '/'}search`} method="GET">
-        <input type="search" name="q" placeholder="STRATEGY KEYWORDS..." autocomplete="off" />
+      
+      <form action={searchAction} method="GET">
+        <input 
+          type="search" 
+          name="q" 
+          placeholder={t('search.placeholder') || '...'} 
+          autocomplete="off" 
+          required
+        />
+        <p class="search-hint">{t('search.hint')}</p>
       </form>
     </div>
   </div>
 </div>
 
 <style>
-  .search-btn { background: none; border: none; color: #ffffff; cursor: pointer; transition: 0.3s; display: flex; }
-  .search-btn:hover { color: #dfd090; }
-  .search-overlay {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: #000033; z-index: 2000;
-    display: flex; justify-content: center; padding-top: 15vh;
-    opacity: 0; visibility: hidden; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  .search-btn { 
+    background: none; 
+    border: none; 
+    color: #ffffff; 
+    cursor: pointer; 
+    transition: 0.3s; 
+    display: flex;
+    padding: 0.5rem;
   }
-  .search-overlay.is-active { opacity: 1; visibility: visible; }
-  .search-modal { width: 100%; max-width: 1000px; padding: 0 2rem; }
-  .modal-header { display: flex; justify-content: space-between; margin-bottom: 3rem; }
-  .modal-label { color: #dfd090; letter-spacing: 0.4em; font-weight: 900; text-transform: uppercase; }
-  .close-btn { color: #ffffff; font-size: 4rem; background: none; border: none; cursor: pointer; line-height: 0.5; }
+  .search-btn:hover { color: #dfd090; transform: scale(1.1); }
+
+  .search-overlay {
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%;
+    background: #000033; 
+    z-index: 5000;
+    display: flex; 
+    justify-content: center; 
+    padding-top: 15vh;
+    opacity: 0; 
+    visibility: hidden; 
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .search-overlay.is-active { 
+    opacity: 1; 
+    visibility: visible; 
+  }
+
+  .search-modal { 
+    width: 100%; 
+    max-width: 1000px; 
+    padding: 0 2rem; 
+  }
+
+  .modal-header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+    margin-bottom: 4rem; 
+  }
+
+  .modal-label { 
+    color: #dfd090; 
+    letter-spacing: 0.5em; 
+    font-weight: 900; 
+    text-transform: uppercase;
+    font-size: 0.8rem;
+  }
+
+  .close-btn { 
+    color: #ffffff; 
+    font-size: 4rem; 
+    background: none; 
+    border: none; 
+    cursor: pointer; 
+    line-height: 0.5;
+    transition: 0.3s;
+  }
+  .close-btn:hover { color: #dfd090; transform: rotate(90deg); }
+
   input {
-    width: 100%; background: none; border: none; border-bottom: 3px solid #dfd090;
-    color: #ffffff; font-size: clamp(2rem, 6vw, 5rem); font-weight: 300;
-    text-transform: uppercase; padding-bottom: 1.5rem; outline: none;
+    width: 100%; 
+    background: none; 
+    border: none; 
+    border-bottom: 3px solid #dfd090;
+    color: #ffffff; 
+    font-size: clamp(2rem, 8vw, 6rem); 
+    font-weight: 200;
+    text-transform: uppercase; 
+    padding-bottom: 1.5rem; 
+    outline: none;
+    font-family: inherit;
+  }
+
+  input::placeholder { color: rgba(255, 255, 255, 0.1); }
+
+  .search-hint {
+    color: rgba(223, 208, 144, 0.5);
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    margin-top: 2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .search-overlay.is-active input {
+    animation: slideUp 0.6s 0.2s both;
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 </style>
 
 <script>
-  const trigger = document.getElementById('search-trigger');
-  const close = document.getElementById('search-close');
-  const overlay = document.getElementById('search-overlay');
+  function initSearch() {
+    // Gestisce sia il trigger nell'header che quello nella mobile bar
+    const triggers = document.querySelectorAll('#search-trigger, #mobile-search-trigger');
+    const close = document.getElementById('search-close');
+    const overlay = document.getElementById('search-overlay');
+    const input = overlay?.querySelector('input') as HTMLInputElement | null;
 
-  trigger?.addEventListener('click', () => {
-    overlay?.classList.add('is-active');
-    setTimeout(() => overlay?.querySelector('input')?.focus(), 100);
-  });
+    const openSearch = () => {
+      overlay?.classList.add('is-active');
+      document.body.style.overflow = 'hidden';
+      setTimeout(() => input?.focus(), 200);
+    };
 
-  close?.addEventListener('click', () => overlay?.classList.remove('is-active'));
+    const closeSearch = () => {
+      overlay?.classList.remove('is-active');
+      document.body.style.overflow = '';
+    };
+
+    triggers.forEach(t => t.addEventListener('click', openSearch));
+    close?.addEventListener('click', closeSearch);
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeSearch();
+    });
+  }
+
+  // Esecuzione iniziale e supporto View Transitions
+  initSearch();
+  document.addEventListener('astro:after-swap', initSearch);
 </script>

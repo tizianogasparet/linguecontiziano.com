@@ -1,19 +1,59 @@
 ---
-// src/components/navigation/BlogCategoryNav.astro
+import { getLocalizedPath, type RouteKey } from '@/i18n/routes';
+import type { LangCode } from '@/i18n/config';
+
 interface Props {
-  categories: { key: string; label: string; href: string }[];
+  lang: LangCode;
+  categories: { key: RouteKey; label: string }[];
   activeCategory?: string;
 }
 
-const { categories = [], activeCategory } = Astro.props;
+const { lang, categories, activeCategory } = Astro.props;
 ---
-<nav class="blog-category-nav">
+<nav class="blog-category-nav" aria-label="Filtro categorie">
   {categories.map(cat => (
     <a
-      href={cat.href}
+      href={getLocalizedPath(lang, cat.key)}
       class={cat.key === activeCategory ? 'active' : ''}
     >
       {cat.label}
     </a>
   ))}
 </nav>
+
+<style>
+  .blog-category-nav {
+    display: flex;
+    gap: 1.5rem;
+    padding: 2rem 0;
+    border-bottom: 1px solid rgba(223, 208, 144, 0.2);
+    overflow-x: auto;
+    scrollbar-width: none; /* Firefox */
+  }
+
+  .blog-category-nav::-webkit-scrollbar { display: none; } /* Chrome/Safari */
+
+  a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 0.5rem 1rem;
+    border: 1px solid transparent;
+    transition: 0.3s;
+    white-space: nowrap;
+  }
+
+  a:hover {
+    color: #dfd090;
+    border-color: #dfd090;
+  }
+
+  a.active {
+    background: #dfd090;
+    color: #000033;
+    border-color: #dfd090;
+  }
+</style>

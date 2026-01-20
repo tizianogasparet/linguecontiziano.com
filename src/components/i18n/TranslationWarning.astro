@@ -1,4 +1,5 @@
 ---
+// src/components/i18n/TranslationWarning.astro
 import type { LangCode } from '../../i18n/config';
 import { useTranslations } from '../../i18n/ui';
 
@@ -21,6 +22,11 @@ const t = useTranslations(currentLang);
 )}
 
 <style>
+  :root {
+    --gold: #dfd090;
+    --gold-muted: rgba(223, 208, 144, 0.1);
+  }
+
   .translation-warning {
     display: flex;
     align-items: center;
@@ -29,10 +35,13 @@ const t = useTranslations(currentLang);
     background: var(--gold-muted);
     border: 1px solid var(--gold);
     margin-bottom: 3rem;
+    border-radius: 4px;
   }
+
   .warning-icon {
     font-size: 1.2rem;
   }
+
   .translation-message {
     margin: 0;
     font-weight: 700;

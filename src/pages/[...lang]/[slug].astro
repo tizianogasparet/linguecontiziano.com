@@ -3,7 +3,7 @@ import { getCollection, render } from 'astro:content';
 import MainLayout from '@/components/layout/MainLayout.astro';
 import PostScene from '@/components/blog/PostScene.astro';
 import { routes, type RouteKey } from '@/i18n/routes';
-import { defaultLang } from '@/i18n/config';
+import { defaultLang, type LangCode } from '@/i18n/config';
 
 export async function getStaticPaths() {
   const pages = await getCollection('pages');
@@ -14,32 +14,46 @@ export async function getStaticPaths() {
     ...legal.map(e => ({ ...e, collectionName: 'legal' }))
   ];
 
-  return allEntries.map((entry) => {
-    const lang = entry.data.lang;
-    const routeKey = entry.data.translationId as RouteKey;
-    const slug = routes[lang]?.[routeKey];
+  return allEntries
+    .filter(entry => entry.data.translationId !== 'home') // Escludiamo la home gestita sopra
+    .map((entry) => {
+      const lang = entry.data.lang as LangCode;
+      const routeKey = entry.data.translationId as RouteKey;
+      
+      // Recupera lo slug tradotto dal file routes.ts
+      const slug = routes[lang]?.[routeKey];
 
-    if (!slug) return null;
+      if (!slug) {
+        console.warn(`Missing route for key "${routeKey}" in language "${lang}"`);
+        return null;
+      }
 
-    return {
-      params: { 
-        lang: lang === defaultLang ? undefined : lang,
-        slug: slug 
-      },
-      props: { 
-        entry, 
-        lang, 
-        isLegal: entry.collectionName === 'legal' 
-      },
-    };
-  }).filter(Boolean);
+      return {
+        params: { 
+          lang: lang === defaultLang ? undefined : lang,
+          slug: slug 
+        },
+        props: { 
+          entry, 
+          lang, 
+          isLegal: entry.collectionName === 'legal' 
+        },
+      };
+    })
+    .filter(Boolean);
+}
+
+interface Props {
+  entry: any;
+  lang: LangCode;
+  isLegal: boolean;
 }
 
 const { entry, lang, isLegal } = Astro.props;
 const { Content } = await render(entry);
 
-// Soluzione errore TS: Verifica esistenza descrizione
-const description = 'description' in entry.data ? (entry.data as any).description : undefined;
+// Gestione sicura della descrizione (fallback al titolo se manca)
+const description = entry.data.description || entry.data.title;
 ---
 
 <MainLayout 

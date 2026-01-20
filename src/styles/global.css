@@ -1,16 +1,35 @@
-/* Variabili Globali - Rigore Cromatico */
+/* ============================================================
+   VARIABILI GLOBALI - RIGORE CROMATICO & TIPOGRAFICO
+   ============================================================ */
 :root {
-  --bg-monolith: #000022; /* Navy ancora più profondo */
+  /* Palette */
+  --bg-monolith: #000022; 
   --bg-modal: rgba(0, 0, 34, 0.98);
   --gold: #dfd090;
   --gold-muted: rgba(223, 208, 144, 0.15);
+  --gold-deep: #b5a46d;
+  
+  /* Text */
   --text-main: #ffffff;
   --text-muted: rgba(255, 255, 255, 0.6);
+  --text-on-gold: #000033;
+  
+  /* Typography */
   --font-sans: "Inter", system-ui, -apple-system, sans-serif;
-  --transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  --font-mono: "JetBrains Mono", monospace; /* Per codici o dati tecnici */
+  
+  /* Effects */
+  --transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  --shadow-gold: 0 10px 30px rgba(0, 0, 0, 0.5);
+  
+  /* Spacing */
+  --nav-height: 80px;
+  --mobile-bar-height: 65px;
 }
 
-/* Reset Totale Professionale */
+/* ============================================================
+   RESET TOTALE PROFESSIONALE
+   ============================================================ */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -18,13 +37,14 @@
 }
 
 html {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
   background-color: var(--bg-monolith);
   scroll-behavior: smooth;
   font-size: 16px;
 }
 
+/* Nasconde scrollbar Chrome/Safari */
 html::-webkit-scrollbar { display: none; }
 
 body {
@@ -33,13 +53,16 @@ body {
   color: var(--text-main);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
-/* Rimozione stili nativi orribili per Search e Liste */
+/* ============================================================
+   ELEMENTI BASE & RESET FORM
+   ============================================================ */
 input, button, select, textarea {
   font-family: inherit;
   font-size: inherit;
@@ -49,7 +72,7 @@ input, button, select, textarea {
   color: inherit;
 }
 
-/* Toglie la "X" nativa dagli input search su Chrome/Safari */
+/* Toglie la "X" nativa dagli input search */
 input[type="search"]::-webkit-search-decoration,
 input[type="search"]::-webkit-search-cancel-button,
 input[type="search"]::-webkit-search-results-button,
@@ -63,44 +86,76 @@ a {
   transition: var(--transition);
 }
 
-/* Layout Containers */
-.monolith-container {
-  width: 100%;
-  max-width: 1440px;
-  margin: 0 auto;
-  padding: 0 2rem;
-  flex: 1; /* Spinge il footer in basso */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
 }
 
-/* Typography Monolith */
+/* ============================================================
+   LAYOUT CONTAINERS (SISTEMA MONOLITH)
+   ============================================================ */
+main {
+  flex: 1; /* Fondamentale per spingere il footer in fondo */
+}
+
+.monolith-container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* Versione stretta per articoli del blog */
+.article-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* ============================================================
+   TYPOGRAPHY MONOLITH
+   ============================================================ */
 .monolith-title {
   font-weight: 900;
   font-style: italic;
   text-transform: uppercase;
   color: var(--gold);
-  text-align: center;
   letter-spacing: -0.05em;
   font-size: clamp(3rem, 12vw, 8.5rem);
-  line-height: 0.8;
+  line-height: 0.85;
+  margin: 2rem 0;
 }
 
-/* Helpers per Header e Navigation */
-.desktop-only {
-  display: none;
+.section-label {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+  display: block;
 }
+
+/* ============================================================
+   UTILITIES & HELPERS
+   ============================================================ */
+.desktop-only { display: none; }
 
 @media (min-width: 1024px) {
   .desktop-only { display: block; }
+  .mobile-only { display: none; }
 }
 
-/* Animazione per Overlay Ricerca */
+/* Stato Attivo per Search/Menu Overlay */
 .is-active {
   opacity: 1 !important;
   pointer-events: auto !important;
   visibility: visible !important;
 }
 
-/* Utility per icone e bottoni */
+/* Effetto per icone e bottoni rapidi */
 .icon-btn {
   cursor: pointer;
   display: flex;
@@ -111,4 +166,28 @@ a {
 
 .icon-btn:hover {
   color: var(--gold);
+  transform: scale(1.05);
+}
+
+/* Selezione Testo Personalizzata */
+::selection {
+  background: var(--gold);
+  color: var(--bg-monolith);
+}
+
+/* Sfumatura di profondità per sfondi */
+.depth-gradient {
+  background: linear-gradient(180deg, var(--bg-monolith) 0%, #000011 100%);
+}
+
+/* ============================================================
+   ANIMAZIONI
+   ============================================================ */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade {
+  animation: fadeIn 0.6s var(--transition) forwards;
 }

@@ -25,6 +25,8 @@ export const ui = {
     'search.placeholder': 'STRATEGY KEYWORDS...',
     'search.hint': 'PRESS ENTER TO SEARCH',
     'search.close': 'CLOSE',
+    'error.404.title': 'PAGE NOT FOUND',
+  'error.404.back': 'RETURN TO STRATEGY',
   },
   it: {
     'site.title': 'Tiziano Gasparet | Strategia',
@@ -50,6 +52,8 @@ export const ui = {
     'search.placeholder': 'PAROLE CHIAVE...',
     'search.hint': 'PREMI INVIO PER CERCARE',
     'search.close': 'CHIUDI',
+    'error.404.title': 'PAGINA NON TROVATA',
+  'error.404.back': 'TORNA ALLA STRATEGIA',
   },
   es: {
     'site.title': 'Tiziano Gasparet | Estrategia',
@@ -75,6 +79,8 @@ export const ui = {
     'search.placeholder': 'PALABRAS CLAVE...',
     'search.hint': 'PRESIONE ENTER PARA BUSCAR',
     'search.close': 'CERRAR',
+    'error.404.title': 'PÁGINA NO ENCONTRADA',
+  'error.404.back': 'VOLVER A LA ESTRATEGIA',
   },
 } as const;
 

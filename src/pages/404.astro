@@ -1,41 +1,41 @@
 ---
 import MainLayout from '@/components/layout/MainLayout.astro';
 import { useTranslations } from '@/i18n/ui';
-import { defaultLang, supportedLanguages, type LangCode } from '@/i18n/config';
+import { defaultLang, languages, type LangCode } from '@/i18n/config';
 import { getLocalizedPath } from '@/i18n/routes';
 
-// Rilevamento lingua dall'URL
+// Rilevamento lingua agnostico dall'URL per servire la 404 corretta
 const { pathname } = Astro.url;
 const firstSegment = pathname.split('/').filter(Boolean)[0];
 
-const lang: LangCode = supportedLanguages.includes(firstSegment as LangCode) 
+const supportedCodes = Object.keys(languages);
+const lang: LangCode = supportedCodes.includes(firstSegment) 
   ? (firstSegment as LangCode) 
   : defaultLang;
 
 const t = useTranslations(lang);
 
-// Link alla home localizzato
+// Link alla home localizzato senza violare RouteKey
 const homeLink = getLocalizedPath(lang, 'home');
-
-const errorMessage: Record<LangCode, string> = {
-  it: 'PAGINA NON TROVATA',
-  en: 'PAGE NOT FOUND',
-  es: 'PÁGINA NO ENCONTRADA'
-};
 ---
 
 <MainLayout
   lang={lang}
   title={`404 | ${t('site.title')}`}
+  description={t('error.404.title')}
 >
   <div class="error-wrapper">
-    <div class="error-container">
-      <span class="error-code">404</span>
-      <h2 class="error-message">{errorMessage[lang]}</h2>
-      <div class="monolith-divider"></div>
-      <a href={homeLink} class="back-link">
-        {t('nav.home')} →
-      </a>
+    <div class="monolith-container">
+      <div class="error-content">
+        <span class="error-code animate-glitch">404</span>
+        <h1 class="error-message">{t('error.404.title')}</h1>
+        
+        <div class="monolith-divider"></div>
+        
+        <a href={homeLink} class="back-link">
+          {t('error.404.back')} <span class="arrow">→</span>
+        </a>
+      </div>
     </div>
   </div>
 </MainLayout>
@@ -47,32 +47,91 @@ const errorMessage: Record<LangCode, string> = {
     align-items: center;
     justify-content: center;
     text-align: center;
+    padding: 4rem 0;
+    background: radial-gradient(circle at center, #000033 0%, var(--bg-monolith) 100%);
   }
+
+  .error-content {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
   .error-code {
-    font-size: clamp(5rem, 20vw, 15rem);
+    font-size: clamp(8rem, 25vw, 18rem);
     font-weight: 900;
     color: var(--gold-muted);
-    line-height: 1;
+    line-height: 0.9;
     display: block;
+    letter-spacing: -0.05em;
+    user-select: none;
   }
+
   .error-message {
+    font-family: var(--font-sans);
     font-style: italic;
     font-weight: 900;
     text-transform: uppercase;
-    font-size: clamp(1.5rem, 5vw, 3rem);
-    margin-top: -2rem;
+    font-size: clamp(1.2rem, 4vw, 2.5rem);
+    color: var(--text-main);
+    margin-top: -1.5rem;
+    letter-spacing: 0.1em;
   }
+
   .monolith-divider {
-    height: 2px;
+    height: 3px;
     background: var(--gold);
-    width: 60px;
-    margin: 2rem auto;
+    width: 80px;
+    margin: 3rem auto;
+    position: relative;
   }
+
+  .monolith-divider::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 12px;
+    height: 12px;
+    background: var(--gold);
+    border: 3px solid var(--bg-monolith);
+  }
+
   .back-link {
+    display: inline-block;
     color: var(--gold);
     text-decoration: none;
-    font-weight: 800;
-    letter-spacing: 0.1em;
+    font-weight: 900;
+    letter-spacing: 0.3em;
     text-transform: uppercase;
+    font-size: 0.9rem;
+    padding: 1rem 2rem;
+    border: 1px solid var(--gold-muted);
+    transition: var(--transition);
+  }
+
+  .back-link:hover {
+    background: var(--gold);
+    color: var(--bg-monolith);
+    border-color: var(--gold);
+  }
+
+  .arrow {
+    display: inline-block;
+    transition: transform 0.3s var(--transition);
+  }
+
+  .back-link:hover .arrow {
+    transform: translateX(8px);
+  }
+
+  /* Animazione minima per coerenza Monolith */
+  .animate-glitch {
+    animation: pulse 4s infinite alternate;
+  }
+
+  @keyframes pulse {
+    from { opacity: 0.4; transform: scale(1); }
+    to { opacity: 0.7; transform: scale(1.02); }
   }
 </style>

@@ -1,37 +1,32 @@
 ---
-import { getCollection, type CollectionEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
 import MainLayout from '@/components/layout/MainLayout.astro';
 import BlogCard from '@/components/blog/BlogCard.astro';
+import { useTranslations } from '@/i18n/ui';
 import { routes, type RouteKey } from '@/i18n/routes';
 import { supportedLanguages, defaultLang, type LangCode } from '@/i18n/config';
 
-export async function getStaticPaths() {
+export async function getStaticPaths({ paginate }: any) {
   const allPosts = await getCollection('blog', ({ data }) => !data.draft);
-  const categoryKeys: RouteKey[] = ['cat-autopsia', 'cat-sistemi', 'cat-psicologia', 'cat-esecuzione'];
-
+  
   return supportedLanguages.flatMap((lang) => {
     const l = lang as LangCode;
-    return categoryKeys.map((catKey) => {
-      const categorySlug = routes[l][catKey];
-      const filteredPosts = allPosts
-        .filter(post => post.data.lang === l && post.data.category === catKey)
-        .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+    const langPosts = allPosts
+      .filter(post => post.data.lang === l)
+      .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
-      return {
-        params: { 
-          lang: l === defaultLang ? undefined : l,
-          category: categorySlug 
-        },
-        props: { posts: filteredPosts, lang: l, categoryKey: catKey }
-      };
+    return paginate(langPosts, {
+      params: { lang: l === defaultLang ? undefined : l },
+      pageSize: 12,
+      props: { lang: l }
     });
   });
 }
 
-const { posts, lang, categoryKey } = Astro.props;
+const { page, lang } = Astro.props;
+const t = useTranslations(lang);
 
-// Helper per generare l'URL del post senza errori TS
-function getPostHref(post: CollectionEntry<'blog'>, currentLang: LangCode) {
+function getPostHref(post: any, currentLang: LangCode) {
   const postSlug = post.id.split('/').pop()?.replace(/\.(mdx|md)$/, '') || '';
   const postCatKey = post.data.category as RouteKey;
   const catSlug = routes[currentLang][postCatKey];
@@ -40,32 +35,49 @@ function getPostHref(post: CollectionEntry<'blog'>, currentLang: LangCode) {
 }
 ---
 
-<MainLayout lang={lang} title={categoryKey}>
-  <div class="category-header">
-    <h1>{categoryKey}</h1>
+<MainLayout lang={lang} title={t('nav.blog')}>
+  <div class="monolith-container">
+    <header class="blog-header">
+      <h1 class="monolith-title">{t('nav.blog')}</h1>
+    </header>
+
+    <section class="blog-grid">
+      {page.data.map((post: any) => (
+        <BlogCard 
+          title={post.data.title}
+          description={post.data.description}
+          date={post.data.pubDate}
+          href={getPostHref(post, lang)}
+        />
+      ))}
+    </section>
+    
+    {page.lastPage > 1 && (
+      <nav class="pagination">
+        {page.url.prev && <a href={page.url.prev}>← PREV</a>}
+        <span class="page-info">{page.currentPage} / {page.lastPage}</span>
+        {page.url.next && <a href={page.url.next}>NEXT →</a>}
+      </nav>
+    )}
   </div>
-  
-  <section class="blog-grid">
-    {posts.map((post: CollectionEntry<'blog'>) => (
-      <BlogCard 
-        title={post.data.title}
-        description={post.data.description}
-        date={post.data.pubDate}
-        href={getPostHref(post, lang)}
-      />
-    ))}
-  </section>
 </MainLayout>
 
 <style>
-  .category-header { padding: 4rem 2.5rem 2rem; max-width: 1440px; margin: 0 auto; }
-  h1 { color: #dfd090; font-size: 3rem; text-transform: uppercase; letter-spacing: 0.1em; }
+  .blog-header { padding: 8vh 0 4vh; }
   .blog-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    gap: 2.5rem;
-    padding: 2rem 2.5rem 5rem;
-    max-width: 1440px;
-    margin: 0 auto;
+    gap: 3rem;
   }
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    padding: 5rem 0;
+    font-weight: 900;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+  }
+  .page-info { color: var(--text-muted); font-size: 0.8rem; }
 </style>

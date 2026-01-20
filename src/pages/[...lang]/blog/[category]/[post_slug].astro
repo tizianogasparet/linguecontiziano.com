@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import MainLayout from '@/components/layout/MainLayout.astro';
 import PostScene from '@/components/blog/PostScene.astro';
+import { useTranslations } from '@/i18n/ui';
 import { routes, type RouteKey } from '@/i18n/routes';
 import { defaultLang, type LangCode } from '@/i18n/config';
 
@@ -26,13 +27,18 @@ export async function getStaticPaths() {
 }
 
 const { post, lang } = Astro.props;
+const t = useTranslations(lang as LangCode);
 const { Content } = await render(post);
 ---
 
-<MainLayout lang={lang as LangCode} title={post.data.title} description={post.data.description}>
+<MainLayout 
+  lang={lang as LangCode} 
+  title={post.data.title} 
+  description={post.data.description}
+>
   <PostScene 
     title={post.data.title} 
-    categoryLabel={post.data.category}
+    categoryLabel={t(post.data.category as any)}
     pubDate={post.data.pubDate}
   >
     <Content />

@@ -1,3 +1,4 @@
+// src/types/navigation.ts
 import type { RouteKey } from '@/i18n/routes';
 
 export interface NavCategory {

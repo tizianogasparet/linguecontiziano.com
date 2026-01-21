@@ -1,28 +1,21 @@
-import { defineCollection, z } from 'astro:content';
+// src/content.config.ts
+import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
-import type { LangCode } from '@/i18n/config';
+import { z } from 'astro:schema';
+import { LANGUAGES_TUPLE } from '@/i18n/config';
 
-/**
- * Enum lingue valide (attuali)
- */
-const langEnum = z.enum(['en', 'it', 'es']);
+const langEnum = z.enum(LANGUAGES_TUPLE);
 
-/**
- * Schema base condiviso da tutte le collezioni
- */
-const minimalSchema = z.object({
-  translationId: z.string().min(1),
-  lang: langEnum,
+const baseSchema = z.object({
   title: z.string().min(1),
+  description: z.string().min(1),
+  lang: langEnum,
+  translationId: z.string().min(1),
 });
 
-/**
- * Collezione BLOG
- */
 const blog = defineCollection({
   loader: glob({ pattern: '**/*.mdx', base: './src/content/blog' }),
-  schema: minimalSchema.extend({
-    description: z.string().min(1),
+  schema: baseSchema.extend({
     pubDate: z.coerce.date(),
     updateDate: z.coerce.date().optional(),
     category: z.enum([
@@ -35,28 +28,16 @@ const blog = defineCollection({
   }),
 });
 
-/**
- * Collezione PAGINE STATICHE
- */
 const pages = defineCollection({
   loader: glob({ pattern: '**/*.mdx', base: './src/content/pages' }),
-  schema: minimalSchema.extend({
-    description: z.string().min(1),
-  }),
+  schema: baseSchema,
 });
 
-/**
- * Collezione LEGALI
- */
 const legal = defineCollection({
   loader: glob({ pattern: '**/*.mdx', base: './src/content/legal' }),
-  schema: minimalSchema.extend({
+  schema: baseSchema.extend({
     updateDate: z.coerce.date(),
   }),
 });
 
-/**
- * Tutte le collezioni
- * ✅ Scalabile: aggiungi nuove collezioni senza modificare il resto del sistema
- */
 export const collections = { blog, pages, legal };

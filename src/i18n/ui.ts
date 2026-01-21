@@ -1,4 +1,5 @@
-import { defaultLang, type LangCode } from './config';
+// src/i18n/ui.ts
+import type { LangCode } from './config';
 
 export const ui = {
   en: {
@@ -26,7 +27,7 @@ export const ui = {
     'search.hint': 'PRESS ENTER TO SEARCH',
     'search.close': 'CLOSE',
     'error.404.title': 'PAGE NOT FOUND',
-  'error.404.back': 'RETURN TO STRATEGY',
+    'error.404.back': 'RETURN TO STRATEGY',
   },
   it: {
     'site.title': 'Tiziano Gasparet | Strategia',
@@ -53,7 +54,7 @@ export const ui = {
     'search.hint': 'PREMI INVIO PER CERCARE',
     'search.close': 'CHIUDI',
     'error.404.title': 'PAGINA NON TROVATA',
-  'error.404.back': 'TORNA ALLA STRATEGIA',
+    'error.404.back': 'TORNA ALLA STRATEGIA',
   },
   es: {
     'site.title': 'Tiziano Gasparet | Estrategia',
@@ -80,13 +81,14 @@ export const ui = {
     'search.hint': 'PRESIONE ENTER PARA BUSCAR',
     'search.close': 'CERRAR',
     'error.404.title': 'PÁGINA NO ENCONTRADA',
-  'error.404.back': 'VOLVER A LA ESTRATEGIA',
+    'error.404.back': 'VOLVER A LA ESTRATEGIA',
   },
 } as const;
 
+export type UITranslationKey = keyof typeof ui.en;
+
 export function useTranslations(lang: LangCode) {
-  return function t(key: keyof typeof ui[typeof defaultLang]) {
-    const currentTranslations = ui[lang] || ui[defaultLang];
-    return currentTranslations[key] || ui[defaultLang][key] || key;
-  }
+  return function t(key: UITranslationKey): string {
+    return ui[lang]?.[key] || ui.en[key] || key;
+  };
 }

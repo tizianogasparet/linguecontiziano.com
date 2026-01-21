@@ -1,68 +1,80 @@
 ---
-import { getCollection, render } from 'astro:content';
 import MainLayout from '@/components/layout/MainLayout.astro';
 import PostScene from '@/components/blog/PostScene.astro';
+import { getCollection } from 'astro:content';
+import { render } from 'astro:content';
+import { supportedLanguages, defaultLang, type LangCode } from '@/i18n/config';
 import { routes, type RouteKey } from '@/i18n/routes';
-import { defaultLang, type LangCode } from '@/i18n/config';
 
+// ✅ Genera TUTTE le pagine statiche + legali per TUTTE le lingue
 export async function getStaticPaths() {
-  const pages = await getCollection('pages');
-  const legal = await getCollection('legal');
-  
-  const allEntries = [
-    ...pages.map(e => ({ ...e, collectionName: 'pages' })),
-    ...legal.map(e => ({ ...e, collectionName: 'legal' }))
-  ];
+  const paths = [];
 
-  return allEntries
-    .filter(entry => entry.data.translationId !== 'home') // Escludiamo la home gestita sopra
-    .map((entry) => {
-      const lang = entry.data.lang as LangCode;
-      const routeKey = entry.data.translationId as RouteKey;
-      
-      // Recupera lo slug tradotto dal file routes.ts
-      const slug = routes[lang]?.[routeKey];
+  // Carica tutte le entry una volta
+  const [pages, legals] = await Promise.all([
+    getCollection('pages'),
+    getCollection('legal')
+  ]);
 
-      if (!slug) {
-        console.warn(`Missing route for key "${routeKey}" in language "${lang}"`);
-        return null;
+  const allEntries = [...pages, ...legals];
+
+  for (const lang of supportedLanguages) {
+    for (const [routeKey, slug] of Object.entries(routes[lang])) {
+      // Salta la home (gestita da index.astro)
+      if (routeKey === 'home') continue;
+
+      // Verifica che esista un contenuto con quel translationId e lingua
+      const exists = allEntries.some(
+        entry => entry.data.lang === lang && entry.data.translationId === routeKey
+      );
+
+      if (exists) {
+        paths.push({
+          params: {
+            lang: lang === defaultLang ? undefined : lang,
+            slug: slug
+          },
+          props: { lang, routeKey, slug }
+        });
       }
+    }
+  }
 
-      return {
-        params: { 
-          lang: lang === defaultLang ? undefined : lang,
-          slug: slug 
-        },
-        props: { 
-          entry, 
-          lang, 
-          isLegal: entry.collectionName === 'legal' 
-        },
-      };
-    })
-    .filter(Boolean);
+  return paths;
 }
 
 interface Props {
-  entry: any;
   lang: LangCode;
-  isLegal: boolean;
+  routeKey: RouteKey;
+  slug: string;
 }
 
-const { entry, lang, isLegal } = Astro.props;
-const { Content } = await render(entry);
+const { lang, routeKey } = Astro.props as Props;
 
-// Gestione sicura della descrizione (fallback al titolo se manca)
-const description = entry.data.description || entry.data.title;
+// Recupera l'entry esatta
+const [pageMatch, legalMatch] = await Promise.all([
+  getCollection('pages', ({ data }) => 
+    data.lang === lang && data.translationId === routeKey
+  ),
+  getCollection('legal', ({ data }) => 
+    data.lang === lang && data.translationId === routeKey
+  )
+]);
+
+const entry = pageMatch[0] || legalMatch[0];
+const isLegal = !!legalMatch[0];
+
+if (!entry) {
+  return Astro.redirect(`/${lang}/404`);
+}
+
+const { Content } = await render(entry);
+const { title, description } = entry.data;
+const finalDescription = description || title;
 ---
 
-<MainLayout 
-  lang={lang} 
-  title={entry.data.title} 
-  description={description}
-  isLegal={isLegal}
->
-  <PostScene title={entry.data.title}>
+<MainLayout lang={lang} title={title} description={finalDescription} isLegal={isLegal}>
+  <PostScene title={title}>
     <Content />
   </PostScene>
 </MainLayout>

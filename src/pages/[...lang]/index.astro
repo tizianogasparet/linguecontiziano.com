@@ -1,41 +1,35 @@
 ---
-import { getCollection, render } from 'astro:content';
 import MainLayout from '@/components/layout/MainLayout.astro';
 import PostScene from '@/components/blog/PostScene.astro';
+import { getCollection } from 'astro:content';
+import { render } from 'astro:content';
 import { supportedLanguages, defaultLang, type LangCode } from '@/i18n/config';
 
+// ✅ Genera / e /it, /es, ecc.
 export async function getStaticPaths() {
-  return supportedLanguages.map((langCode) => {
-    // en -> undefined (root), it -> 'it', es -> 'es'
-    const langParam = langCode === defaultLang ? undefined : langCode;
-    return {
-      params: { lang: langParam },
-      props: { lang: langCode },
-    };
-  });
+  return supportedLanguages.map(lang => ({
+    params: { lang: lang === defaultLang ? undefined : lang },
+    props: { lang },
+  }));
 }
 
 const { lang } = Astro.props as { lang: LangCode };
 
-// Recupero il contenuto della home per la lingua specifica
-const allPages = await getCollection('pages');
-const homeContent = allPages.find(
-  (p) => p.data.translationId === 'home' && p.data.lang === lang
+const pages = await getCollection('pages', ({ data }) => 
+  data.lang === lang && data.translationId === 'home'
 );
 
-if (!homeContent) {
-  return Astro.redirect('/404');
+if (pages.length === 0) {
+  return Astro.redirect(`/${lang}/404`);
 }
 
-const { Content } = await render(homeContent);
+const entry = pages[0];
+const { Content } = await render(entry);
+const { title, description } = entry.data;
 ---
 
-<MainLayout 
-  lang={lang} 
-  title={homeContent.data.title} 
-  description={homeContent.data.description}
->
-  <PostScene title={homeContent.data.title}>
+<MainLayout lang={lang} title={title} description={description}>
+  <PostScene title={title}>
     <Content />
   </PostScene>
 </MainLayout>

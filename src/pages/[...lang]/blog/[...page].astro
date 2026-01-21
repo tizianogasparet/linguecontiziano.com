@@ -3,44 +3,40 @@ import { getCollection } from 'astro:content';
 import MainLayout from '@/components/layout/MainLayout.astro';
 import BlogCard from '@/components/blog/BlogCard.astro';
 import { useTranslations } from '@/i18n/ui';
-import { routes, type RouteKey } from '@/i18n/routes';
+import { routes } from '@/i18n/routes';
 import { supportedLanguages, defaultLang, type LangCode } from '@/i18n/config';
+import type { CollectionEntry } from 'astro:content';
+
+function getPostHref(post: CollectionEntry<'blog'>, lang: LangCode): string {
+  const postSlug = post.id.split('/').pop()?.replace(/\.(mdx|md)$/, '') || '';
+  const catKey = post.data.category;
+  const catSlug = routes[lang][catKey];
+  const prefix = lang === defaultLang ? '' : `/${lang}`;
+  return `${prefix}/blog/${catSlug}/${postSlug}`.replace(/\/+/g, '/');
+}
 
 export async function getStaticPaths({ paginate }: any) {
   const allPosts = await getCollection('blog', ({ data }) => !data.draft);
-  
-  return supportedLanguages.flatMap((lang) => {
-    const l = lang as LangCode;
-    const langPosts = allPosts
-      .filter(post => post.data.lang === l)
-      .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
-    // Paginazione: genera /blog, /blog/2 oppure /it/blog, /it/blog/2
+  return supportedLanguages.flatMap(lang => {
+    const langPosts = allPosts.filter(p => p.data.lang === lang);
+    if (langPosts.length === 0) return [];
+
     return paginate(langPosts, {
-      params: { lang: l === defaultLang ? undefined : l },
+      params: { lang: lang === defaultLang ? undefined : lang },
       pageSize: 12,
-      props: { lang: l }
+      props: { lang }
     });
   });
 }
 
-const { page, lang } = Astro.props;
-const t = useTranslations(lang as LangCode);
-
-/**
- * Generazione URL Post agnostica.
- * Costruisce: /[lang]/blog/[category-slug]/[post-slug]
- */
-function getPostHref(post: any, currentLang: LangCode) {
-  const postSlug = post.id.split('/').pop()?.replace(/\.(mdx|md)$/, '') || '';
-  const postCatKey = post.data.category as RouteKey;
-  const catSlug = routes[currentLang][postCatKey];
-  const prefix = currentLang === defaultLang ? '' : `/${currentLang}`;
-  
-  // Usiamo 'blog' come segmento fisso ma localizzabile se necessario 
-  // (qui manteniamo la coerenza con la tua struttura cartelle)
-  return `${prefix}/blog/${catSlug}/${postSlug}`.replace(/\/+/g, '/');
+interface Props {
+  page: any;
+  lang: LangCode;
 }
+
+const { page, lang } = Astro.props as Props;
+const t = useTranslations(lang);
 ---
 
 <MainLayout lang={lang} title={t('nav.blog')}>
@@ -51,7 +47,7 @@ function getPostHref(post: any, currentLang: LangCode) {
     </header>
 
     <section class="blog-grid">
-      {page.data.map((post: any) => (
+      {page.data.map((post: CollectionEntry<'blog'>) => (
         <BlogCard 
           title={post.data.title}
           description={post.data.description}
@@ -64,7 +60,7 @@ function getPostHref(post: any, currentLang: LangCode) {
     {page.lastPage > 1 && (
       <nav class="pagination" aria-label="Pagination">
         {page.url.prev ? (
-          <a href={page.url.prev} class="nav-link">← {t('search.placeholder') ? 'PREV' : 'PREV'}</a>
+          <a href={page.url.prev} class="nav-link">← PREV</a>
         ) : <span class="disabled">←</span>}
         
         <div class="page-counter">
@@ -86,6 +82,24 @@ function getPostHref(post: any, currentLang: LangCode) {
     padding: 12vh 0 6vh;
     border-bottom: 1px solid var(--gold-muted);
     margin-bottom: 4rem;
+    text-align: center;
+  }
+
+  .section-label {
+    display: block;
+    font-size: 0.9rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold-muted);
+    margin-bottom: 1rem;
+  }
+
+  .monolith-title {
+    font-family: var(--font-sans);
+    font-weight: 900;
+    font-size: clamp(2rem, 6vw, 4rem);
+    color: var(--text-main);
+    margin: 0;
   }
 
   .blog-grid {
@@ -95,7 +109,7 @@ function getPostHref(post: any, currentLang: LangCode) {
     margin-bottom: 5rem;
   }
 
-  /* Paginazione Monolith */
+  /* Pagination */
   .pagination {
     display: flex;
     justify-content: center;
@@ -105,12 +119,13 @@ function getPostHref(post: any, currentLang: LangCode) {
     font-weight: 900;
     letter-spacing: 0.2em;
     text-transform: uppercase;
+    color: var(--text-main);
   }
 
   .nav-link {
     color: var(--gold);
-    transition: var(--transition);
-    font-size: 0.9rem;
+    text-decoration: none;
+    transition: letter-spacing 0.3s ease;
   }
 
   .nav-link:hover {
@@ -119,7 +134,7 @@ function getPostHref(post: any, currentLang: LangCode) {
 
   .disabled {
     opacity: 0.2;
-    cursor: not-allowed;
+    pointer-events: none;
   }
 
   .page-counter {
@@ -135,5 +150,6 @@ function getPostHref(post: any, currentLang: LangCode) {
 
   @media (max-width: 768px) {
     .pagination { gap: 1.5rem; }
+    .blog-grid { gap: 2rem; }
   }
 </style>

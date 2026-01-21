@@ -1,55 +1,59 @@
 ---
-import { getCollection, type CollectionEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
 import MainLayout from '@/components/layout/MainLayout.astro';
 import BlogCard from '@/components/blog/BlogCard.astro';
 import { useTranslations } from '@/i18n/ui';
-import { routes, type RouteKey } from '@/i18n/routes';
+import { routes } from '@/i18n/routes';
 import { supportedLanguages, defaultLang, type LangCode } from '@/i18n/config';
+import type { CollectionEntry } from 'astro:content';
+
+const CATEGORIES = ['cat-autopsia', 'cat-sistemi', 'cat-psicologia', 'cat-esecuzione'] as const;
+
+function getPostHref(post: CollectionEntry<'blog'>, lang: LangCode): string {
+  const postSlug = post.id.split('/').pop()?.replace(/\.(mdx|md)$/, '') || '';
+  const catKey = post.data.category;
+  const catSlug = routes[lang][catKey];
+  const prefix = lang === defaultLang ? '' : `/${lang}`;
+  return `${prefix}/blog/${catSlug}/${postSlug}`.replace(/\/+/g, '/');
+}
 
 export async function getStaticPaths({ paginate }: any) {
   const allPosts = await getCollection('blog', ({ data }) => !data.draft);
-  const categoryKeys: RouteKey[] = ['cat-autopsia', 'cat-sistemi', 'cat-psicologia', 'cat-esecuzione'];
 
-  return supportedLanguages.flatMap((lang) => {
-    const l = lang as LangCode;
-    
-    return categoryKeys.flatMap((catKey) => {
-      const categorySlug = routes[l][catKey];
-      const filteredPosts = allPosts
-        .filter(post => post.data.lang === l && post.data.category === catKey)
-        .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+  return supportedLanguages.flatMap(lang => {
+    return CATEGORIES.flatMap(catKey => {
+      const postsInCat = allPosts.filter(
+        p => p.data.lang === lang && p.data.category === catKey
+      );
+      if (postsInCat.length === 0) return [];
 
-      // Generiamo la paginazione specifica per questa lingua e questa categoria
-      return paginate(filteredPosts, {
+      return paginate(postsInCat, {
         params: { 
-          lang: l === defaultLang ? undefined : l,
-          category: categorySlug 
+          lang: lang === defaultLang ? undefined : lang,
+          category: routes[lang][catKey] 
         },
         pageSize: 12,
-        props: { lang: l, categoryKey: catKey }
+        props: { lang, categoryKey: catKey }
       });
     });
   });
 }
 
-const { page, lang, categoryKey } = Astro.props;
-const t = useTranslations(lang as LangCode);
-
-// Helper URL identico a quello del blog principale per coerenza
-function getPostHref(post: CollectionEntry<'blog'>, currentLang: LangCode) {
-  const postSlug = post.id.split('/').pop()?.replace(/\.(mdx|md)$/, '') || '';
-  const postCatKey = post.data.category as RouteKey;
-  const catSlug = routes[currentLang][postCatKey];
-  const prefix = currentLang === defaultLang ? '' : `/${currentLang}`;
-  return `${prefix}/blog/${catSlug}/${postSlug}`.replace(/\/+/g, '/');
+interface Props {
+  page: any;
+  lang: LangCode;
+  categoryKey: typeof CATEGORIES[number];
 }
+
+const { page, lang, categoryKey } = Astro.props as Props;
+const t = useTranslations(lang);
 ---
 
-<MainLayout lang={lang} title={`${t(categoryKey as any)} | Blog`}>
+<MainLayout lang={lang} title={`${t(categoryKey)} | Blog`}>
   <div class="monolith-container">
     <header class="category-header animate-fade">
       <span class="section-label">{t('nav.categories')}</span>
-      <h1 class="monolith-title">{t(categoryKey as any)}</h1>
+      <h1 class="monolith-title">{t(categoryKey)}</h1>
     </header>
 
     <section class="blog-grid">
@@ -64,7 +68,7 @@ function getPostHref(post: CollectionEntry<'blog'>, currentLang: LangCode) {
     </section>
 
     {page.lastPage > 1 && (
-      <nav class="pagination">
+      <nav class="pagination" aria-label="Category pagination">
         {page.url.prev ? (
           <a href={page.url.prev} class="nav-link">← PREV</a>
         ) : <span class="disabled">←</span>}
@@ -84,17 +88,37 @@ function getPostHref(post: CollectionEntry<'blog'>, currentLang: LangCode) {
 </MainLayout>
 
 <style>
-  /* Usiamo lo stesso stile del blog per coerenza visiva */
   .category-header {
     padding: 12vh 0 6vh;
     border-bottom: 1px solid var(--gold-muted);
     margin-bottom: 4rem;
+    text-align: center;
   }
+
+  .section-label {
+    display: block;
+    font-size: 0.9rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold-muted);
+    margin-bottom: 1rem;
+  }
+
+  .monolith-title {
+    font-family: var(--font-sans);
+    font-weight: 900;
+    font-size: clamp(2rem, 6vw, 4rem);
+    color: var(--text-main);
+    margin: 0;
+  }
+
   .blog-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(min(100%, 400px), 1fr));
     gap: 3rem;
+    margin-bottom: 5rem;
   }
+
   .pagination {
     display: flex;
     justify-content: center;
@@ -104,10 +128,37 @@ function getPostHref(post: CollectionEntry<'blog'>, currentLang: LangCode) {
     font-weight: 900;
     letter-spacing: 0.2em;
     text-transform: uppercase;
+    color: var(--text-main);
   }
-  .nav-link { color: var(--gold); }
-  .disabled { opacity: 0.2; }
-  .page-counter { display: flex; align-items: center; gap: 0.5rem; }
+
+  .nav-link {
+    color: var(--gold);
+    text-decoration: none;
+    transition: letter-spacing 0.3s ease;
+  }
+
+  .nav-link:hover {
+    letter-spacing: 0.4em;
+  }
+
+  .disabled {
+    opacity: 0.2;
+    pointer-events: none;
+  }
+
+  .page-counter {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.2rem;
+  }
+
   .current { color: var(--gold); }
+  .sep { color: var(--gold-muted); font-weight: 300; }
   .total { color: var(--text-muted); font-size: 0.9rem; }
+
+  @media (max-width: 768px) {
+    .pagination { gap: 1.5rem; }
+    .blog-grid { gap: 2rem; }
+  }
 </style>

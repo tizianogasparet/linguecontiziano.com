@@ -1,42 +1,35 @@
 ---
+// Header.astro
 import { getLocalizedPath } from '@/i18n/routes';
 import { useTranslations } from '@/i18n/ui';
-import Dropdown from '@/components/navigation/Dropdown.astro'; // Componente helper per i menu a tendina
-import Search from '@/components/search/Search.astro';
 import type { LangCode } from '@/i18n/config';
+
+import CategoryDropdown from '@/components/navigation/CategoryDropdown.astro';
+import LanguageSwitcher from '@/components/navigation/LanguageSwitcher.astro';
+import Search from '@/components/search/Search.astro';
 
 interface Props { lang: LangCode; }
 const { lang } = Astro.props;
 const t = useTranslations(lang);
-
-// Definizione categorie per il dropdown
-const categories = [
-  { key: 'cat-autopsia', label: t('cat-autopsia') },
-  { key: 'cat-sistemi', label: t('cat-sistemi') },
-  { key: 'cat-psicologia', label: t('cat-psicologia') },
-  { key: 'cat-esecuzione', label: t('cat-esecuzione') },
-];
 ---
 
 <header class="main-header">
   <div class="header-container">
-    <nav class="desktop-only">
-      <ul class="nav-list">
-        <li><a href={getLocalizedPath(lang, 'home')} class="nav-link">{t('nav.home')}</a></li>
-        <li>
-          <Dropdown label={t('nav.categories')} items={categories} lang={lang} type="category" />
-        </li>
-        <li><a href={getLocalizedPath(lang, 'blog')} class="nav-link">{t('nav.blog')}</a></li>
-      </ul>
-    </nav>
-
     <a href={getLocalizedPath(lang, 'home')} class="logo">
       {t('nav.logo')}
     </a>
 
-    <div class="header-right desktop-only">
-      <Dropdown label={lang.toUpperCase()} type="language" lang={lang} />
-      <div class="vertical-divider"></div>
+    <nav class="desktop-nav">
+      <ul class="nav-list">
+        <li><a href={getLocalizedPath(lang, 'home')} class="nav-link">{t('nav.home')}</a></li>
+        <li><CategoryDropdown lang={lang} /></li>
+        <li><a href={getLocalizedPath(lang, 'blog')} class="nav-link">{t('nav.blog')}</a></li>
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+      <LanguageSwitcher lang={lang} />
+      <div class="divider"></div>
       <Search lang={lang} />
     </div>
   </div>
@@ -44,8 +37,8 @@ const categories = [
 
 <style>
   .main-header {
-    height: 100px;
-    background: var(--bg-monolith);
+    height: var(--nav-height);
+    background-color: var(--bg-monolith);
     border-bottom: 2px solid var(--gold);
     display: flex;
     align-items: center;
@@ -53,32 +46,48 @@ const categories = [
     top: 0;
     z-index: 1000;
   }
+
   .header-container {
-    width: 100%; max-width: 1440px; margin: 0 auto; padding: 0 2.5rem;
-    display: flex; justify-content: space-between; align-items: center;
-    position: relative;
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 2.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
+
   .logo {
-    color: var(--gold); font-weight: 900; letter-spacing: 0.3em;
-    text-transform: uppercase; font-size: 1.25rem; text-decoration: none;
+    color: var(--gold);
+    font-weight: 900;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    font-size: 1.25rem;
+    text-decoration: none;
     transition: var(--transition);
+    white-space: nowrap;
   }
-  
-  /* Desktop Nav */
-  .nav-list { display: flex; gap: 3rem; align-items: center; }
+
+  .logo:hover { color: var(--gold-deep); }
+
+  .desktop-nav { display: block; }
+  .nav-list { display: flex; gap: 3rem; align-items: center; list-style: none; }
+
   .nav-link {
-    color: var(--text-main); font-size: 0.9rem; font-weight: 800; letter-spacing: 0.15em;
-    text-transform: uppercase; transition: 0.3s;
+    color: var(--text-main);
+    font-size: 0.9rem;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    transition: var(--transition);
+    white-space: nowrap;
   }
   .nav-link:hover { color: var(--gold); }
-  
-  .header-right { display: flex; align-items: center; gap: 1.5rem; }
-  .vertical-divider { width: 1px; height: 25px; background: var(--gold-muted); }
+
+  .header-actions { display: flex; align-items: center; gap: 1.5rem; }
+  .divider { width: 1px; height: 25px; background-color: var(--gold-muted); }
 
   @media (max-width: 1023px) {
-    .desktop-only { display: none; }
-    .header-container { justify-content: center; }
-    .main-header { height: 70px; }
-    .logo { font-size: 1rem; letter-spacing: 0.15em; }
+    .main-header { display: none; }
   }
 </style>

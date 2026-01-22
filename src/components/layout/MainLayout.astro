@@ -7,31 +7,33 @@ import { useTranslations } from '@/i18n/ui';
 import { languages, defaultLang, type LangCode } from '@/i18n/config';
 
 interface Props {
-  lang?: LangCode;         // Lingua corrente, opzionale
-  title?: string;          // Titolo pagina
-  description?: string;    // Meta description
-  isLegal?: boolean;       // Per il noindex su pagine legal
+  lang?: LangCode;
+  title?: string;
+  description?: string;
+  isLegal?: boolean;
 }
 
-// Props destrutturati con fallback
 const { lang = defaultLang, title, description, isLegal = false } = Astro.props;
-
-// Traduzioni
 const t = useTranslations(lang);
+const htmlDir = languages[lang]?.dir ?? 'ltr';
 
-// Meta tag
-const metaTitle = title ? `${title} | Tiziano Gasparet` : t('site.title');
+const metaTitle = title 
+  ? `${title} | ${t('site.title').split(' | ')[0]}`
+  : t('site.title');
+
 const metaDescription = description ?? t('site.description');
 
-// Direzione lingua (ltr/rtl)
-const htmlDir = languages[lang]?.dir ?? 'ltr';
+// Estrai il dominio di produzione in modo sicuro
+const PRODUCTION_DOMAIN = 'linguecontiziano.com';
+const siteUrl = Astro.site ? new URL(Astro.site) : null;
+const analyticsDomain = siteUrl ? siteUrl.hostname : PRODUCTION_DOMAIN;
 ---
 
 <!DOCTYPE html>
 <html lang={lang} dir={htmlDir}>
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
     {isLegal && <meta name="robots" content="noindex, follow" />}
     
@@ -43,24 +45,21 @@ const htmlDir = languages[lang]?.dir ?? 'ltr';
   </head>
   <body>
     <Header lang={lang} />
-
-    <main class="monolith-container">
-      <slot />
+    
+    <main>
+      <div class="monolith-container">
+        <slot />
+      </div>
     </main>
-
+    
     <Footer lang={lang} />
+
+    <!-- Analytics: solo su dominio di produzione -->
+    <script
+      defer
+      src="https://analytics.tizianogasparet.com/script.js"
+      data-website-id="ba60ff97-841b-4f9d-be5c-28fbbd08327a"
+      data-domains={analyticsDomain}
+    ></script>
   </body>
 </html>
-
-<style>
-  .monolith-container {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    padding: 0;
-    margin: 0;
-    background-color: #000020;
-    color: #ffffff;
-    font-family: 'Inter', sans-serif;
-  }
-</style>

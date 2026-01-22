@@ -7,8 +7,6 @@ import { routes } from '@/i18n/routes';
 import { supportedLanguages, defaultLang, type LangCode } from '@/i18n/config';
 import type { CollectionEntry } from 'astro:content';
 
-const CATEGORIES = ['cat-autopsia', 'cat-sistemi', 'cat-psicologia', 'cat-esecuzione'] as const;
-
 function getPostHref(post: CollectionEntry<'blog'>, lang: LangCode): string {
   const postSlug = post.id.split('/').pop()?.replace(/\.(mdx|md)$/, '') || '';
   const catKey = post.data.category;
@@ -19,33 +17,41 @@ function getPostHref(post: CollectionEntry<'blog'>, lang: LangCode): string {
 
 export async function getStaticPaths({ paginate }: any) {
   const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+  const CATEGORY_KEYS = ['cat-autopsia', 'cat-sistemi', 'cat-psicologia', 'cat-esecuzione'] as const;
 
   return supportedLanguages.flatMap(lang => {
-    return CATEGORIES.flatMap(catKey => {
+    return CATEGORY_KEYS.flatMap(catKey => {
       const postsInCat = allPosts.filter(
         p => p.data.lang === lang && p.data.category === catKey
       );
-      if (postsInCat.length === 0) return [];
 
-      return paginate(postsInCat, {
+      // ✅ Genera SEMPRE almeno la prima pagina, anche se vuota
+      return paginate(postsInCat.length > 0 ? postsInCat : [null], {
         params: { 
           lang: lang === defaultLang ? undefined : lang,
           category: routes[lang][catKey] 
         },
         pageSize: 12,
-        props: { lang, categoryKey: catKey }
+        props: { 
+          lang, 
+          categoryKey: catKey, 
+          isEmpty: postsInCat.length === 0 
+        }
       });
     });
   });
 }
 
+type CategoryKey = 'cat-autopsia' | 'cat-sistemi' | 'cat-psicologia' | 'cat-esecuzione';
+
 interface Props {
   page: any;
   lang: LangCode;
-  categoryKey: typeof CATEGORIES[number];
+  categoryKey: CategoryKey;
+  isEmpty: boolean;
 }
 
-const { page, lang, categoryKey } = Astro.props as Props;
+const { page, lang, categoryKey, isEmpty } = Astro.props as Props;
 const t = useTranslations(lang);
 ---
 
@@ -56,18 +62,24 @@ const t = useTranslations(lang);
       <h1 class="monolith-title">{t(categoryKey)}</h1>
     </header>
 
-    <section class="blog-grid">
-      {page.data.map((post: CollectionEntry<'blog'>) => (
-        <BlogCard 
-          title={post.data.title}
-          description={post.data.description}
-          date={post.data.pubDate}
-          href={getPostHref(post, lang)}
-        />
-      ))}
-    </section>
+    {isEmpty ? (
+      <div class="empty-state">
+        <p>{t('search.placeholder')?.replace('KEYWORDS...', 'NESSUN POST ANCORA.') || 'No posts yet.'}</p>
+      </div>
+    ) : (
+      <section class="blog-grid">
+        {page.data.map((post: CollectionEntry<'blog'>) => (
+          <BlogCard 
+            title={post.data.title}
+            description={post.data.description}
+            date={post.data.pubDate}
+            href={getPostHref(post, lang)}
+          />
+        ))}
+      </section>
+    )}
 
-    {page.lastPage > 1 && (
+    {!isEmpty && page.lastPage > 1 && (
       <nav class="pagination" aria-label="Category pagination">
         {page.url.prev ? (
           <a href={page.url.prev} class="nav-link">← PREV</a>
@@ -110,6 +122,14 @@ const t = useTranslations(lang);
     font-size: clamp(2rem, 6vw, 4rem);
     color: var(--text-main);
     margin: 0;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 4rem 0;
+    color: var(--text-muted);
+    font-style: italic;
+    font-size: 1.2rem;
   }
 
   .blog-grid {

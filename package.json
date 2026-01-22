@@ -8,13 +8,17 @@
     "preview": "astro preview",
     "astro": "astro"
   },
+  "engines": {
+    "node": ">=25.4.0"
+  },
   "dependencies": {
     "@astrojs/check": "^0.9.6",
     "@astrojs/mdx": "^4.3.13",
     "@astrojs/node": "^9.5.2",
     "@astrojs/sitemap": "^3.7.0",
-    "astro": "^5.16.11",
+    "astro": "^5.16.14",
     "fuse.js": "^7.1.0",
     "typescript": "^5.9.3"
-  }
+  },
+  "devDependencies": {}
 }

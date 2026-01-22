@@ -1,51 +1,141 @@
 ---
+// LanguageSwitcher.astro
 import { languages, type LangCode } from '@/i18n/config';
 import { getLocalizedPath } from '@/i18n/routes';
 
 interface Props {
-  currentLang: LangCode;
+  lang: LangCode;
 }
 
-const { currentLang } = Astro.props;
-// Ottiene la lista delle lingue escludendo quella corrente
-const otherLangs = Object.entries(languages).filter(([code]) => code !== currentLang);
+const { lang } = Astro.props;
+const otherLangs = Object.entries(languages).filter(([code]) => code !== lang);
 ---
 
-<div class="lang-dropdown">
-  <button class="current-btn" aria-haspopup="true" aria-expanded="false" id="lang-menu-btn">
-    {currentLang.toUpperCase()}
+<div class="lang-dropdown" data-lang-switcher>
+  <button
+    class="current-btn"
+    aria-haspopup="true"
+    aria-expanded="false"
+    aria-controls="lang-menu-list"
+    id="lang-menu-btn"
+  >
+    {lang.toUpperCase()}
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-        <path d="m6 9 6 6 6-6"/>
+      <path d="m6 9 6 6 6-6"/>
     </svg>
   </button>
   
-  <div class="dropdown-list" role="menu" aria-labelledby="lang-menu-btn">
+  <ul
+    id="lang-menu-list"
+    class="dropdown-list"
+    role="menu"
+    aria-labelledby="lang-menu-btn"
+    tabindex="-1"
+  >
     {otherLangs.map(([code, config]) => (
-      <a href={getLocalizedPath(code as LangCode, 'home')} role="menuitem">
-        {code.toUpperCase()} <small>({config.label})</small>
-      </a>
+      <li role="none">
+        <a
+          href={getLocalizedPath(code as LangCode, 'home')}
+          role="menuitem"
+          tabindex="-1"
+        >
+          {code.toUpperCase()} <small>({config.label})</small>
+        </a>
+      </li>
     ))}
-  </div>
+  </ul>
 </div>
+
+<script>
+  // @ts-nocheck
+  document.addEventListener('DOMContentLoaded', () => {
+    const switchers = document.querySelectorAll('[data-lang-switcher]');
+    
+    switchers.forEach(container => {
+      const button = container.querySelector('.current-btn');
+      const menu = container.querySelector('.dropdown-list');
+      if (!button || !menu) return;
+
+      const items = Array.from(menu.querySelectorAll('a'));
+      let isOpen = false;
+      
+      function openMenu() {
+        if (isOpen) return;
+        menu.style.opacity = '1';
+        menu.style.visibility = 'visible';
+        menu.style.transform = 'translateY(0)';
+        button.setAttribute('aria-expanded', 'true');
+        isOpen = true;
+        if (items[0]) items[0].focus();
+      }
+      
+      function closeMenu() {
+        if (!isOpen) return;
+        menu.style.opacity = '0';
+        menu.style.visibility = 'hidden';
+        menu.style.transform = 'translateY(10px)';
+        button.setAttribute('aria-expanded', 'false');
+        isOpen = false;
+        button.focus();
+      }
+      
+      button.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (isOpen) closeMenu();
+        else openMenu();
+      });
+      
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && isOpen) closeMenu();
+      });
+      
+      menu.addEventListener('keydown', (e) => {
+        const currentIndex = items.indexOf(document.activeElement);
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          const next = (currentIndex + 1) % items.length;
+          items[next]?.focus();
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          const prev = (currentIndex - 1 + items.length) % items.length;
+          items[prev]?.focus();
+        } else if (e.key === 'Tab') {
+          closeMenu();
+        }
+      });
+      
+      document.addEventListener('click', (e) => {
+        if (e.target instanceof Node && !container.contains(e.target)) {
+          closeMenu();
+        }
+      });
+    });
+  });
+</script>
 
 <style>
   .lang-dropdown { position: relative; }
   
   .current-btn {
-    color: #ffffff;
+    color: var(--text-main);
     font-size: 0.9rem;
     font-weight: 800;
     background: transparent;
-    border: 1px solid rgba(223, 208, 144, 0.4);
+    border: 1px solid var(--gold-muted);
     cursor: pointer;
     display: flex;
     align-items: center;
     gap: 0.6rem;
     padding: 0.5rem 1rem;
-    transition: 0.3s;
+    transition: var(--transition);
   }
   
-  .current-btn:hover { border-color: #dfd090; color: #dfd090; }
+  .current-btn:hover,
+  .current-btn:focus {
+    border-color: var(--gold);
+    color: var(--gold);
+    outline: none;
+  }
   
   .dropdown-list {
     position: absolute;
@@ -53,7 +143,7 @@ const otherLangs = Object.entries(languages).filter(([code]) => code !== current
     right: 0;
     min-width: 160px;
     background: #000033;
-    border: 1px solid #dfd090;
+    border: 1px solid var(--gold);
     display: flex;
     flex-direction: column;
     opacity: 0;
@@ -62,25 +152,39 @@ const otherLangs = Object.entries(languages).filter(([code]) => code !== current
     transition: 0.3s cubic-bezier(0.19, 1, 0.22, 1);
     box-shadow: 0 10px 30px rgba(0,0,0,0.8);
     z-index: 100;
-  }
-
-  .lang-dropdown:hover .dropdown-list {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
+    list-style: none;
+    margin: 0;
+    padding: 0.5rem 0;
   }
 
   .dropdown-list a {
-    color: #ffffff;
-    padding: 1rem;
+    color: var(--text-main);
+    padding: 0.75rem 1rem;
     font-size: 0.85rem;
     font-weight: 700;
     text-decoration: none;
-    border-bottom: 1px solid rgba(223, 208, 144, 0.1);
-    transition: 0.2s;
+    border-bottom: 1px solid var(--gold-muted);
+    transition: var(--transition);
+    display: block;
+    outline: 2px solid transparent;
+    outline-offset: 2px;
   }
 
-  .dropdown-list a:hover { background: #000080; color: #dfd090; }
+  .dropdown-list a:hover,
+  .dropdown-list a:focus {
+    background: #000033;
+    color: var(--gold);
+    outline-color: var(--gold);
+  }
 
-  small { font-weight: 400; opacity: 0.6; margin-left: 0.5rem; font-size: 0.7rem; }
+  .dropdown-list a:last-child {
+    border-bottom: none;
+  }
+
+  small { 
+    font-weight: 400; 
+    color: var(--text-muted); 
+    margin-left: 0.5rem; 
+    font-size: 0.7rem; 
+  }
 </style>

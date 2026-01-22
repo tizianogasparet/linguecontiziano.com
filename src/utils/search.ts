@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content';
 import { useTranslations } from '@/i18n/ui';
 import type { LangCode } from '@/i18n/config';
-import { getLocalizedPath } from '@/i18n/routes';
+import { routes } from '@/i18n/routes';
 
 export async function performSearch(query: string, lang: LangCode) {
   const q = query.toLowerCase().trim();
@@ -22,10 +22,15 @@ export async function performSearch(query: string, lang: LangCode) {
     .slice(0, 8)
     .map(p => {
       const slug = p.id.split('/').pop()?.replace(/\.(mdx|md)$/, '') || '';
+      const catKey = p.data.category;
+      const catSlug = routes[lang][catKey];
+      const prefix = lang === 'en' ? '' : `/${lang}`;
+      const url = `${prefix}/blog/${catSlug}/${slug}`.replace(/\/+/g, '/');
+
       return {
         title: p.data.title,
-        categoryLabel: t(p.data.category as any),
-        url: getLocalizedPath(lang, 'blog', slug),
+        categoryLabel: t(catKey),
+        url: url,
       };
     });
 }

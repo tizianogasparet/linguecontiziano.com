@@ -56,6 +56,13 @@ export const routes: Record<LangCode, Record<RouteKey, string>> = {
   },
 };
 
+/**
+ * Genera URL localizzati.
+ * Esempi:
+ * - getLocalizedPath('en', 'home') → '/'
+ * - getLocalizedPath('it', 'about') → '/it/chi-sono'
+ * - getLocalizedPath('en', 'blog', 'my-post') → '/blog/my-post'
+ */
 export function getLocalizedPath(lang: LangCode, key: RouteKey, slug?: string): string {
   const isDefault = lang === 'en';
   const route = routes[lang][key];

@@ -1,10 +1,25 @@
 ---
-import { getLocalizedPath } from '@/i18n/routes';
+// Footer.astro
+import { getLocalizedPath, routes, type RouteKey } from '@/i18n/routes';
 import { useTranslations } from '@/i18n/ui';
 import type { LangCode } from '@/i18n/config';
 
+interface Props {
+  lang: LangCode;
+}
+
 const { lang } = Astro.props;
-const t = useTranslations(lang as LangCode);
+const t = useTranslations(lang);
+const currentYear = new Date().getFullYear();
+
+function formatCopyright(text: string, year: number): string {
+  return text.replace('{year}', year.toString());
+}
+
+function getCategoryUrl(lang: LangCode, categoryKey: Extract<RouteKey, `cat-${string}`>): string {
+  const catSlug = routes[lang][categoryKey];
+  return lang === 'en' ? `/blog/${catSlug}` : `/${lang}/blog/${catSlug}`;
+}
 
 const categories = [
   { key: 'cat-autopsia', label: t('cat-autopsia') },
@@ -13,10 +28,15 @@ const categories = [
   { key: 'cat-esecuzione', label: t('cat-esecuzione') },
 ] as const;
 
-const legal = ['privacy', 'cookie', 'terms', 'security'] as const;
+const legalPages = [
+  { key: 'privacy', label: t('footer.privacy') },
+  { key: 'cookie', label: t('footer.cookie') },
+  { key: 'terms', label: t('footer.terms') },
+  { key: 'security', label: t('security') },
+] as const;
 ---
 
-<footer class="main-footer">
+<footer class="main-footer" aria-label="Footer">
   <div class="footer-container">
     <div class="footer-grid">
       <div class="footer-section brand">
@@ -25,48 +45,161 @@ const legal = ['privacy', 'cookie', 'terms', 'security'] as const;
       </div>
 
       <div class="footer-section">
-        <span class="section-label">{t('nav.categories')}</span>
-        <div class="cat-list">
-          {categories.map(({ key, label }) => (
-            <a href={getLocalizedPath(lang as LangCode, key as any)} class="footer-link">{label}</a>
-          ))}
-        </div>
+        <h3 class="section-heading">{t('nav.categories')}</h3>
+        <nav aria-label="Categorie del blog">
+          <ul class="link-list">
+            {categories.map(({ key, label }) => (
+              <li><a href={getCategoryUrl(lang, key)}>{label}</a></li>
+            ))}
+          </ul>
+        </nav>
       </div>
 
-      <div class="footer-section">
-        <span class="section-label">{t('footer.contact')}</span>
-        <a href={`mailto:${t('contact.email')}`} class="gold-link underline">{t('contact.email')}</a>
+      <div class="footer-section contact">
+        <h3 class="section-heading">{t('footer.contact')}</h3>
+        <a href={`mailto:${t('contact.email')}`} class="email-link">{t('contact.email')}</a>
       </div>
     </div>
 
     <div class="footer-bottom">
-      <p class="copyright">© {new Date().getFullYear()} TIZIANO GASPARET. INTELLETTO E STRATEGIA.</p>
-      <div class="legal-links">
-        {legal.map(key => (
-          <a href={getLocalizedPath(lang as LangCode, key as any)}>
-            {key === 'security' ? t('security') : t(`footer.${key}` as any)}
-          </a>
-        ))}
-      </div>
+      <p class="copyright">{formatCopyright(t('footer.copyright'), currentYear)}</p>
+      <nav aria-label="Link legali">
+        <ul class="legal-links">
+          {legalPages.map(({ key, label }) => (
+            <li><a href={getLocalizedPath(lang, key)}>{label}</a></li>
+          ))}
+        </ul>
+      </nav>
     </div>
   </div>
 </footer>
 
 <style>
-.main-footer { background:#000033; padding:5rem 2.5rem 2rem; border-top:2px solid #dfd090; margin-top:auto; }
-.footer-container { max-width:1440px; margin:0 auto; }
-.footer-grid { display:flex; justify-content:space-between; flex-wrap:wrap; gap:3rem; padding-bottom:4rem; }
-.footer-section { display:flex; flex-direction:column; gap:1.5rem; }
-.footer-logo { color:#dfd090; font-size:1.25rem; font-weight:900; letter-spacing:0.2em; text-transform:uppercase; }
-.mission-text { color:#fff; font-size:1rem; line-height:1.6; max-width:320px; }
-.section-label { color:#dfd090; font-size:0.85rem; font-weight:900; letter-spacing:0.2em; text-transform:uppercase; }
-.cat-list { display:flex; flex-direction:column; gap:0.8rem; }
-.footer-link, .gold-link { color:#fff; font-size:1rem; font-weight:700; text-transform:uppercase; text-decoration:none; transition:0.3s; }
-.footer-link:hover, .gold-link:hover { color:#dfd090; }
-.underline { border-bottom:2px solid #dfd090; padding-bottom:2px; align-self:flex-start; }
-.footer-bottom { border-top:1px solid rgba(223,208,144,0.2); padding-top:2rem; display:flex; justify-content:space-between; align-items:center; }
-.copyright { font-size:0.8rem; color:rgba(255,255,255,0.6); letter-spacing:0.1em; }
-.legal-links { display:flex; gap:2rem; }
-.legal-links a { color:#fff; font-size:0.85rem; text-decoration:none; text-transform:uppercase; font-weight:600; }
-.legal-links a:hover { color:#dfd090; }
+.main-footer {
+  background: #000033;
+  padding: 5rem 2.5rem 2rem;
+  border-top: 2px solid var(--gold);
+  margin-top: auto;
+  color: var(--text-main);
+}
+
+.footer-container {
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 3rem;
+  padding-bottom: 4rem;
+}
+
+.footer-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.footer-logo,
+.section-heading {
+  font-weight: 900;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin: 0;
+  font-size: 0.85rem;
+}
+
+.footer-logo {
+  font-size: 1.25rem;
+}
+
+.mission-text {
+  color: var(--text-main);
+  font-size: 1rem;
+  line-height: 1.6;
+  max-width: 320px;
+}
+
+.link-list,
+.legal-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.link-list li,
+.legal-links li {
+  margin: 0;
+}
+
+.link-list a,
+.legal-links a,
+.email-link {
+  color: var(--text-main);
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: var(--transition);
+  display: inline-block;
+  padding: 0.25rem 0;
+}
+
+.link-list a:focus,
+.legal-links a:focus,
+.email-link:focus {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+.link-list a:hover,
+.legal-links a:hover,
+.email-link:hover {
+  color: #dfd090;
+}
+
+.email-link {
+  border-bottom: 2px solid #dfd090;
+  padding-bottom: 2px;
+  align-self: flex-start;
+}
+
+.footer-bottom {
+  border-top: 1px solid var(--gold-muted);
+  padding-top: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.copyright {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+  margin: 0;
+}
+
+.legal-links {
+  flex-direction: row;
+  gap: 2rem;
+}
+
+@media (max-width: 768px) {
+  .footer-grid { gap: 2.5rem; }
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .legal-links {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+}
 </style>

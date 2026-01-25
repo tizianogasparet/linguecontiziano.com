@@ -121,62 +121,62 @@ function getCategoryPath(key: typeof categoryKeys[number]): string {
 </script>
 
 <style>
-  .category-dropdown { position: relative; display: inline-block; }
+.category-dropdown { position: relative; display: inline-block; }
   
-  .dropdown-trigger {
-    font-weight: 800;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--text-main);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: none;
-    border: none;
-    padding: 0;
-    transition: var(--transition);
-  }
-  
-  .dropdown-trigger:focus {
-    outline: 2px solid var(--gold);
-    outline-offset: 2px;
-  }
+.dropdown-trigger {
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-main);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: none;
+  padding: 0;
+  transition: var(--transition);
+}
 
-  .dropdown-content {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background: var(--bg-monolith);
-    border: 1px solid var(--gold-muted);
-    min-width: 280px;
-    z-index: 100;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(10px);
-    transition: var(--transition);
-    padding: 1rem 0;
-    list-style: none;
-    margin: 0;
-  }
-  
-  .dropdown-content a {
-    display: block;
-    padding: 0.8rem 1.5rem;
-    font-size: 0.8rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--text-main);
-    text-decoration: none;
-    outline: 2px solid transparent;
-    outline-offset: 2px;
-  }
-  
-  .dropdown-content a:hover,
-  .dropdown-content a:focus {
-    background: var(--gold-muted);
-    color: var(--gold);
-    outline-color: var(--gold);
-  }
+.dropdown-trigger:focus {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+.dropdown-content {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: var(--bg-monolith);
+  border: 1px solid var(--gold-muted);
+  min-width: 280px;
+  z-index: 100;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: var(--transition);
+  padding: 1rem 0;
+  list-style: none;
+  margin: 0;
+}
+
+.dropdown-content a {
+  display: block;
+  padding: 0.8rem 1.5rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-main);
+  text-decoration: none;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.dropdown-content a:hover,
+.dropdown-content a:focus {
+  background: var(--gold-muted);
+  color: var(--gold);
+  outline-color: var(--gold);
+}
 </style>

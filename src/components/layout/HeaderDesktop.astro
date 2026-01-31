@@ -27,21 +27,25 @@ const t = useTranslations(lang);
 
     <div class="header-actions">
       <LanguageSwitcher lang={lang} />
-      <div class="divider"></div>
     </div>
   </div>
 </header>
 
 <style>
 .header-desktop {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  width: 100%;
   z-index: 1000;
+  /* ⚠️ Full-width border-bottom */
+  background-color: var(--bg-monolith);
+  border-bottom: 2px solid var(--gold);
 }
 
 .header-container {
-  background-color: var(--bg-monolith);
-  border-bottom: 2px solid var(--gold);
+  max-width: 1440px;
+  margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -89,11 +93,5 @@ const t = useTranslations(lang);
   display: flex;
   align-items: center;
   gap: 1.5rem;
-}
-
-.divider {
-  width: 1px;
-  height: 25px;
-  background-color: var(--gold-muted);
 }
 </style>

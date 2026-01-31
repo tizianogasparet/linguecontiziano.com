@@ -1,11 +1,12 @@
 ---
-translationId: "security"
-lang: "en"
-title: "Privacy Policy"
-description: "This document outlines our privacy and cookie policies."
+title: Security Policy
+lang: en
+translationId: security
 updateDate: 2026-01-19
+description: This document outlines our privacy and cookie policies.
 sitemap: false
 ---
+
 # Security Policy (RFC 9116)
 
 Security and system integrity are paramount for our strategic analysis environment. 
@@ -13,7 +14,7 @@ This page outlines the procedures for reporting vulnerabilities related to this 
 
 ## Reporting
 If you have identified a security vulnerability, please report it by sending an email to:
-**tiziano@linguecontiziano.com**
+**security@linguecontiziano.com**
 
 ## Guidelines
 * Provide sufficient technical details to reproduce the issue.

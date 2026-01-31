@@ -1,32 +1,17 @@
 ---
 // MainLayout.astro
 import '../../styles/global.css';
-import Header from '@/components/layout/Header.astro';
+import HeaderDesktop from '@/components/layout/HeaderDesktop.astro';
+import HeaderMobile from '@/components/layout/HeaderMobile.astro';
 import Footer from '@/components/layout/Footer.astro';
-import { useTranslations } from '@/i18n/ui';
 import { languages, defaultLang, type LangCode } from '@/i18n/config';
 
 interface Props {
   lang?: LangCode;
-  title?: string;
-  description?: string;
-  isLegal?: boolean;
 }
 
-const { lang = defaultLang, title, description, isLegal = false } = Astro.props;
-const t = useTranslations(lang);
+const { lang = defaultLang } = Astro.props;
 const htmlDir = languages[lang]?.dir ?? 'ltr';
-
-const metaTitle = title 
-  ? `${title} | ${t('site.title').split(' | ')[0]}`
-  : t('site.title');
-
-const metaDescription = description ?? t('site.description');
-
-// Estrai il dominio di produzione in modo sicuro
-const PRODUCTION_DOMAIN = 'linguecontiziano.com';
-const siteUrl = Astro.site ? new URL(Astro.site) : null;
-const analyticsDomain = siteUrl ? siteUrl.hostname : PRODUCTION_DOMAIN;
 ---
 
 <!DOCTYPE html>
@@ -34,32 +19,22 @@ const analyticsDomain = siteUrl ? siteUrl.hostname : PRODUCTION_DOMAIN;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
-    {isLegal && <meta name="robots" content="noindex, follow" />}
-    
-    <title>{metaTitle}</title>
-    <meta name="description" content={metaDescription} />
+    <meta name="robots" content="noindex, nofollow" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    
     <slot name="head" />
   </head>
   <body>
-    <Header lang={lang} />
-    
+    <div class="desktop-only">
+      <HeaderDesktop lang={lang} />
+    </div>
+    <div class="mobile-only">
+      <HeaderMobile lang={lang} />
+    </div>
     <main>
       <div class="monolith-container">
         <slot />
       </div>
     </main>
-    
     <Footer lang={lang} />
-
-    <!-- Analytics: solo su dominio di produzione -->
-    <script
-      defer
-      src="https://analytics.tizianogasparet.com/script.js"
-      data-website-id="ba60ff97-841b-4f9d-be5c-28fbbd08327a"
-      data-domains={analyticsDomain}
-    ></script>
   </body>
 </html>

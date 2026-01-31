@@ -2,9 +2,7 @@
 translationId: "terms"
 lang: "it"
 title: "Privacy Policy"
-description: "This document outlines our privacy and cookie policies."
 updateDate: 2026-01-19
-sitemap: false
 ---
 
 ## Privacy Policy

@@ -12,39 +12,41 @@ const { lang } = Astro.props;
 const t = useTranslations(lang);
 ---
 
-<header class="header-mobile">
-  <!-- Logo in alto -->
+<!-- Logo fisso in alto -->
+<header class="mobile-header-fixed">
   <div class="mobile-logo">
     <a href={getLocalizedPath(lang, 'home')} class="logo">
       {t('nav.logo')}
     </a>
   </div>
-
-  <!-- Barra inferiore -->
-  <div class="mobile-action-bar" aria-label="Navigazione mobile">
-    <div class="action-item" aria-label="Categorie">
-      <CategoryDropdown lang={lang} />
-    </div>
-
-    <div class="action-item" aria-label="Lingua">
-      <LanguageSwitcher lang={lang} />
-    </div>
-
-    <div class="action-item" aria-label="Ricerca">
-    </div>
-  </div>
 </header>
 
+<!-- Barra inferiore fissa -->
+<div class="mobile-action-bar" aria-label="Navigazione mobile">
+  <div class="action-item" aria-label="Categorie">
+    <CategoryDropdown lang={lang} />
+  </div>
+
+  <div class="action-item" aria-label="Lingua">
+    <LanguageSwitcher lang={lang} />
+  </div>
+</div>
+
 <style>
-.header-mobile {
-  position: sticky;
+/* Logo fisso in alto — full-width */
+.mobile-header-fixed {
+  position: fixed;
   top: 0;
+  left: 0;
+  width: 100%;
   z-index: 1000;
+  background-color: var(--bg-monolith);
+  border-bottom: 2px solid var(--gold);
 }
 
 .mobile-logo {
-  background-color: var(--bg-monolith);
-  border-bottom: 2px solid var(--gold);
+  max-width: 1440px;
+  margin: 0 auto;
   padding: 1rem 2.5rem;
   display: flex;
   justify-content: center;
@@ -64,6 +66,7 @@ const t = useTranslations(lang);
 
 .logo:hover { color: var(--gold-deep); }
 
+/* Barra inferiore fissa */
 .mobile-action-bar {
   position: fixed;
   bottom: 0;
@@ -78,6 +81,8 @@ const t = useTranslations(lang);
   z-index: 9999;
   padding-bottom: env(safe-area-inset-bottom);
   overflow: visible;
+  max-width: 1440px;
+  margin: 0 auto;
 }
 
 .action-item {
@@ -85,7 +90,7 @@ const t = useTranslations(lang);
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 33.33%;
+  width: 50%;
   position: relative;
 }
 </style>

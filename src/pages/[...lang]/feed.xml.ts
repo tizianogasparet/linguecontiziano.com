@@ -65,13 +65,10 @@ export const GET: APIRoute = async ({ params, site }) => {
 
       const catSlug = catSlugs[lang]?.[catKey] || catKey;
       const prefix = lang === 'en' ? '' : `/${lang}`;
-      const link = `${prefix}/blog/${catSlug}/${slug}`;
 
       return {
         title: post.data.title,
         pubDate: post.data.pubDate,
-        description: post.data.description,
-        link,
         content: post.body,
       };
     }),

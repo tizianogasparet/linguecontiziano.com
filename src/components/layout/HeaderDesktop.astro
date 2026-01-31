@@ -1,5 +1,5 @@
 ---
-// Header.astro
+// HeaderDesktop.astro
 import { getLocalizedPath } from '@/i18n/routes';
 import { useTranslations } from '@/i18n/ui';
 import type { LangCode } from '@/i18n/config';
@@ -12,7 +12,7 @@ const { lang } = Astro.props;
 const t = useTranslations(lang);
 ---
 
-<header class="main-header">
+<header class="header-desktop">
   <div class="header-container">
     <a href={getLocalizedPath(lang, 'home')} class="logo">
       {t('nav.logo')}
@@ -20,7 +20,6 @@ const t = useTranslations(lang);
 
     <nav class="main-nav">
       <ul class="nav-list">
-        <li><a href={getLocalizedPath(lang, 'home')} class="nav-link">{t('nav.home')}</a></li>
         <li><CategoryDropdown lang={lang} /></li>
         <li><a href={getLocalizedPath(lang, 'blog')} class="nav-link">{t('nav.blog')}</a></li>
       </ul>
@@ -34,28 +33,22 @@ const t = useTranslations(lang);
 </header>
 
 <style>
-.main-header {
-  height: var(--nav-height);
-  background-color: var(--bg-monolith);
-  border-bottom: 2px solid var(--gold);
-  display: flex;
-  align-items: center;
+.header-desktop {
   position: sticky;
   top: 0;
   z-index: 1000;
 }
 
 .header-container {
-  width: 100%;
-  max-width: 1440px;
-  margin: 0 auto;
-  padding: 0 2.5rem;
+  background-color: var(--bg-monolith);
+  border-bottom: 2px solid var(--gold);
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 0 2.5rem;
+  height: var(--nav-height);
 }
 
-/* Logo */
 .logo {
   color: var(--gold);
   font-weight: 900;
@@ -69,7 +62,6 @@ const t = useTranslations(lang);
 
 .logo:hover { color: var(--gold-deep); }
 
-/* Navigazione principale */
 .main-nav {
   display: block;
 }
@@ -93,7 +85,6 @@ const t = useTranslations(lang);
 
 .nav-link:hover { color: var(--gold); }
 
-/* Azioni destre */
 .header-actions {
   display: flex;
   align-items: center;
@@ -104,38 +95,5 @@ const t = useTranslations(lang);
   width: 1px;
   height: 25px;
   background-color: var(--gold-muted);
-}
-
-/* Mobile */
-@media (max-width: 1023px) {
-  .main-header {
-    height: 60px;
-    padding: 0 1.5rem;
-  }
-
-  .header-container {
-    padding: 0 1.5rem;
-  }
-
-  .logo {
-    font-size: 1rem;
-    letter-spacing: 0.15em;
-  }
-
-  .nav-list {
-    gap: 1.5rem;
-  }
-
-  .nav-link {
-    font-size: 0.8rem;
-  }
-
-  .header-actions {
-    gap: 1rem;
-  }
-
-  .divider {
-    height: 20px;
-  }
 }
 </style>

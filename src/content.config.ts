@@ -8,16 +8,14 @@ const langEnum = z.enum(LANGUAGES_TUPLE);
 
 const baseSchema = z.object({
   title: z.string().min(1),
-  description: z.string().min(1),
   lang: langEnum,
   translationId: z.string().min(1),
 });
 
 const blog = defineCollection({
-  loader: glob({ pattern: '**/*.mdx', base: './src/content/blog' }),
+  loader: glob({ pattern: '**/*.md', base: './src/content/blog' }),
   schema: baseSchema.extend({
     pubDate: z.coerce.date(),
-    updateDate: z.coerce.date().optional(),
     category: z.enum([
       'cat-autopsia',
       'cat-sistemi',
@@ -29,12 +27,12 @@ const blog = defineCollection({
 });
 
 const pages = defineCollection({
-  loader: glob({ pattern: '**/*.mdx', base: './src/content/pages' }),
+  loader: glob({ pattern: '**/*.md', base: './src/content/pages' }),
   schema: baseSchema,
 });
 
 const legal = defineCollection({
-  loader: glob({ pattern: '**/*.mdx', base: './src/content/legal' }),
+  loader: glob({ pattern: '**/*.md', base: './src/content/legal' }),
   schema: baseSchema.extend({
     updateDate: z.coerce.date(),
   }),

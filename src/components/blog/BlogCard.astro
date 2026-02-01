@@ -1,105 +1,129 @@
 ---
+// BlogCard.astro
+import { useTranslations } from '@/i18n/ui';
+
 interface Props {
   title: string;
   description?: string;
   href: string;
-  date: Date;
+  date: Date | string;
+  author: string;
+  categoryLabel: string;
+  lang: string;
 }
 
-const { title, description, href, date } = Astro.props;
+const { title, description, href, date, author, categoryLabel, lang } = Astro.props;
+const t = useTranslations(lang as any);
 
-const formattedDate = date.toLocaleDateString(undefined, {
-  year: 'numeric',
-  month: 'short',
-  day: 'numeric'
-});
+let formattedDate = '';
+let isoDate = '';
+if (date) {
+  const d = typeof date === 'string' ? new Date(date) : date;
+  if (!isNaN(d.getTime())) {
+    formattedDate = d.toLocaleDateString(lang, {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+    isoDate = d.toISOString();
+  }
+}
 ---
 
 <a href={href} class="blog-card">
   <article>
     <div class="card-meta">
-      <time datetime={date.toISOString()}>{formattedDate}</time>
+      <span class="meta-category">{categoryLabel}</span>
+      {formattedDate && <time class="meta-date" datetime={isoDate}>{formattedDate}</time>}
+      <span class="meta-author">{author}</span>
     </div>
     <h3 class="card-title">{title}</h3>
     {description && <p class="card-desc">{description}</p>}
     <div class="card-footer">
-      <span class="read-more">DISCOVER →</span>
+      <span class="read-more">{t('blog.discover-more')}</span>
     </div>
   </article>
 </a>
 
 <style>
-  .blog-card {
-    display: block;
-    padding: 2.5rem;
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(223, 208, 144, 0.1);
-    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-    position: relative;
-    height: 100%;
-  }
+.blog-card {
+  display: block;
+  padding: 2.5rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(223, 208, 144, 0.1);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  height: 100%;
+}
 
-  .blog-card:hover {
-    background: rgba(223, 208, 144, 0.03);
-    border-color: var(--gold);
-    transform: translateY(-5px);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-  }
+.blog-card:hover {
+  background: rgba(223, 208, 144, 0.03);
+  border-color: var(--gold);
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
 
-  .card-meta {
-    margin-bottom: 1.5rem;
-  }
+.card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  align-items: center;
+}
 
-  time {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    color: var(--gold);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
+.meta-category,
+.meta-date,
+.meta-author {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--gold);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
 
-  .card-title {
-    font-size: 1.6rem;
-    font-weight: 900;
-    line-height: 1.2;
-    margin-bottom: 1rem;
-    text-transform: uppercase;
-    color: var(--text-main);
-    transition: color 0.3s;
-  }
+.card-title {
+  font-size: 1.6rem;
+  font-weight: 900;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  color: var(--text-main);
+  transition: color 0.3s;
+}
 
-  .blog-card:hover .card-title {
-    color: var(--gold);
-  }
+.blog-card:hover .card-title {
+  color: var(--gold);
+}
 
-  .card-desc {
-    font-size: 0.95rem;
-    color: var(--text-muted);
-    line-height: 1.5;
-    margin-bottom: 2rem;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
+.card-desc {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-bottom: 2rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 
-  .card-footer {
-    margin-top: auto;
-  }
+.card-footer {
+  margin-top: auto;
+}
 
-  .read-more {
-    font-size: 0.75rem;
-    font-weight: 900;
-    letter-spacing: 0.2em;
-    color: var(--gold);
-    opacity: 0;
-    transform: translateX(-10px);
-    transition: all 0.3s;
-    display: inline-block;
-  }
+.read-more {
+  font-size: 0.75rem;
+  font-weight: 900;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: all 0.3s;
+  display: inline-block;
+}
 
-  .blog-card:hover .read-more {
-    opacity: 1;
-    transform: translateX(0);
-  }
+.blog-card:hover .read-more {
+  opacity: 1;
+  transform: translateX(0);
+}
 </style>

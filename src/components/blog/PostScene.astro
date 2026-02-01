@@ -1,26 +1,38 @@
 ---
+// PostScene.astro
 interface Props {
   title: string;
-  categoryLabel?: string;
-  pubDate?: Date;
+  categoryLabel: string;
+  pubDate: Date | string;
+  lang: string;
 }
 
-const { title, categoryLabel, pubDate } = Astro.props;
+const { title, categoryLabel, pubDate, lang } = Astro.props;
 
-// Formattazione data localizzata (opzionale, o usiamo stringa passata)
-const dateString = pubDate ? pubDate.toLocaleDateString(undefined, {
-  year: 'numeric',
-  month: 'long',
-  day: 'numeric'
-}) : null;
+let dateString = '';
+if (pubDate) {
+  const d = typeof pubDate === 'string' ? new Date(pubDate) : pubDate;
+  if (!isNaN(d.getTime())) {
+    dateString = d.toLocaleDateString(lang, {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  }
+}
+
+const author = "Tiziano Gasparet";
 ---
 
 <article class="post-scene">
   <header class="post-header">
     <div class="article-container">
-      {categoryLabel && <span class="post-category">{categoryLabel}</span>}
+      <div class="post-meta">
+        <span class="meta-category">{categoryLabel}</span>
+        {dateString && <time class="meta-date">{dateString}</time>}
+        <span class="meta-author">{author}</span>
+      </div>
       <h1 class="post-title">{title}</h1>
-      {dateString && <time class="post-date">{dateString}</time>}
       <div class="header-divider"></div>
     </div>
   </header>
@@ -33,104 +45,103 @@ const dateString = pubDate ? pubDate.toLocaleDateString(undefined, {
 </article>
 
 <style>
-  .post-scene {
-    padding-bottom: 10rem;
-  }
+.post-scene {
+  padding-bottom: 10rem;
+}
 
-  .post-header {
-    padding: 15vh 0 5vh;
-    text-align: center;
-  }
+.post-header {
+  padding: 15vh 0 5vh;
+  text-align: center;
+}
 
-  .post-category {
-    display: block;
-    color: var(--gold);
-    font-weight: 900;
-    letter-spacing: 0.4em;
-    text-transform: uppercase;
-    font-size: 0.8rem;
-    margin-bottom: 1.5rem;
-  }
+.post-meta {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
 
-  .post-title {
-    font-size: clamp(2.5rem, 6vw, 5rem);
-    font-weight: 900;
-    line-height: 1;
-    text-transform: uppercase;
-    margin-bottom: 2rem;
-    letter-spacing: -0.02em;
-  }
+.meta-category,
+.meta-date,
+.meta-author {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--gold);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
 
-  .post-date {
-    display: block;
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-  }
+.post-title {
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  font-weight: 900;
+  line-height: 1;
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+  letter-spacing: -0.02em;
+}
 
-  .header-divider {
-    width: 60px;
-    height: 4px;
-    background: var(--gold);
-    margin: 3rem auto 0;
-  }
+.header-divider {
+  width: 60px;
+  height: 4px;
+  background: var(--gold);
+  margin: 3rem auto 0;
+}
 
-  /* STILI DEL CONTENUTO (Markdown) */
-  .post-content {
-    font-size: 1.2rem;
-    line-height: 1.8;
-    color: rgba(255, 255, 255, 0.9);
-  }
+/* STILI DEL CONTENUTO (Markdown) */
+.post-content {
+  font-size: 1.2rem;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.9);
+}
 
-  .post-content :global(p) { margin-bottom: 2rem; }
+.post-content :global(p) { margin-bottom: 2rem; }
 
-  .post-content :global(h2) {
-    font-size: 2.2rem;
-    color: var(--gold);
-    margin: 4rem 0 1.5rem;
-    text-transform: uppercase;
-    font-weight: 900;
-    line-height: 1.1;
-  }
+.post-content :global(h2) {
+  font-size: 2.2rem;
+  color: var(--gold);
+  margin: 4rem 0 1.5rem;
+  text-transform: uppercase;
+  font-weight: 900;
+  line-height: 1.1;
+}
 
-  .post-content :global(h3) {
-    font-size: 1.6rem;
-    margin: 3rem 0 1rem;
-    text-transform: uppercase;
-    font-weight: 800;
-  }
+.post-content :global(h3) {
+  font-size: 1.6rem;
+  margin: 3rem 0 1rem;
+  text-transform: uppercase;
+  font-weight: 800;
+}
 
-  .post-content :global(blockquote) {
-    border-left: 4px solid var(--gold);
-    padding: 1.5rem 2rem;
-    background: var(--gold-muted);
-    font-style: italic;
-    margin: 3rem 0;
-    font-size: 1.4rem;
-  }
+.post-content :global(blockquote) {
+  border-left: 4px solid var(--gold);
+  padding: 1.5rem 2rem;
+  background: var(--gold-muted);
+  font-style: italic;
+  margin: 3rem 0;
+  font-size: 1.4rem;
+}
 
-  .post-content :global(strong) {
-    color: var(--gold);
-    font-weight: 800;
-  }
+.post-content :global(strong) {
+  color: var(--gold);
+  font-weight: 800;
+}
 
-  .post-content :global(ul) {
-    margin: 2rem 0;
-    list-style: none;
-  }
+.post-content :global(ul) {
+  margin: 2rem 0;
+  list-style: none;
+}
 
-  .post-content :global(li) {
-    margin-bottom: 1rem;
-    padding-left: 1.5rem;
-    position: relative;
-  }
+.post-content :global(li) {
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+  position: relative;
+}
 
-  .post-content :global(li::before) {
-    content: "—";
-    position: absolute;
-    left: 0;
-    color: var(--gold);
-  }
+.post-content :global(li::before) {
+  content: "—";
+  position: absolute;
+  left: 0;
+  color: var(--gold);
+}
 </style>

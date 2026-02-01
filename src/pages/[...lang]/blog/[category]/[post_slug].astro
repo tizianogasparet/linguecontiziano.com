@@ -1,4 +1,5 @@
 ---
+// src/pages/[...lang]/blog/[category]/[post_slug].astro
 import { getCollection, render } from 'astro:content';
 import MainLayout from '@/components/layout/MainLayout.astro';
 import PostScene from '@/components/blog/PostScene.astro';
@@ -37,15 +38,12 @@ const t = useTranslations(lang);
 const { Content } = await render(post);
 ---
 
-<MainLayout 
-  lang={lang} 
-  title={post.data.title} 
-  description={post.data.description}
->
+<MainLayout lang={lang}>
   <PostScene 
     title={post.data.title} 
     categoryLabel={t(post.data.category)}
     pubDate={post.data.pubDate}
+    lang={lang}
   >
     <Content />
   </PostScene>

@@ -1,19 +1,17 @@
 ---
 translationId: placeholder-001
 lang: it
-title: TITOLO ARTICOLO
-description: Breve descrizione dell'articolo.
+title: TÍTULO DEL ARTÍCULO
+description: Breve descripción del artículo.
 pubDate: 2026-01-01
-updateDate: 2026-01-01
 category: cat-sistemi
 draft: false
 ---
 
-# TITOLO ARTICOLO
+# TÍTULO DEL ARTÍCULO
 
-- Punto chiave 1
-- Punto chiave 2
-- Punto chiave 3
+- Punto clave 1
+- Punto clave 2
+- Punto clave 3
 
-
-Scrivi qui il contenuto dettagliato. Mantieni la struttura a punti, paragrafi brevi e immagini solo inline se necessarie.
+Escribe aquí el contenido detallado...

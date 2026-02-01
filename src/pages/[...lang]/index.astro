@@ -1,11 +1,10 @@
 ---
+// src/pages/[...lang]/index.astro
 import MainLayout from '@/components/layout/MainLayout.astro';
-import PostScene from '@/components/blog/PostScene.astro';
 import { getCollection } from 'astro:content';
 import { render } from 'astro:content';
 import { supportedLanguages, defaultLang, type LangCode } from '@/i18n/config';
 
-// ✅ Genera / e /it, /es, ecc.
 export async function getStaticPaths() {
   return supportedLanguages.map(lang => ({
     params: { lang: lang === defaultLang ? undefined : lang },
@@ -25,11 +24,40 @@ if (pages.length === 0) {
 
 const entry = pages[0];
 const { Content } = await render(entry);
-const { title, description } = entry.data;
+const { title } = entry.data;
 ---
 
-<MainLayout lang={lang} title={title} description={description}>
-  <PostScene title={title}>
-    <Content />
-  </PostScene>
+<MainLayout lang={lang}>
+  <div class="monolith-container">
+    <article class="static-page">
+      <h1 class="monolith-title">{title}</h1>
+      <div class="page-content">
+        <Content />
+      </div>
+    </article>
+  </div>
 </MainLayout>
+
+<style>
+.static-page {
+  padding: 6rem 0;
+}
+
+.page-content {
+  font-size: 1.2rem;
+  line-height: 1.8;
+  color: var(--text-main);
+}
+
+.page-content :global(h2) {
+  font-size: 2.2rem;
+  color: var(--gold);
+  margin: 3rem 0 1.5rem;
+  text-transform: uppercase;
+  font-weight: 900;
+}
+
+.page-content :global(p) {
+  margin-bottom: 1.5rem;
+}
+</style>

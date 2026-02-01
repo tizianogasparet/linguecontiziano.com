@@ -1,12 +1,10 @@
 ---
-translationId: "cookie"
+translationId: "privacy"
 lang: "es"
 title: "Privacy Policy"
-description: "This document outlines our privacy and cookie policies."
 updateDate: 2026-01-19
-sitemap: false
 ---
 
 ## Privacy Policy
 
-This is a placeholder text for the legal page. Content is protected and not for indexing.
+This is a placeholder text for the legal page.

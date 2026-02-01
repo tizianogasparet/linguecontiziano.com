@@ -1,10 +1,9 @@
 ---
 translationId: placeholder-001
-lang: es
+lang: en
 title: TÍTULO DEL ARTÍCULO
 description: Breve descripción del artículo.
 pubDate: 2026-01-01
-updateDate: 2026-01-01
 category: cat-sistemi
 draft: false
 ---
@@ -15,5 +14,4 @@ draft: false
 - Punto clave 2
 - Punto clave 3
 
-
-Escribe aquí el contenido detallado. Mantén la estructura con viñetas, párrafos cortos y las imágenes solo inline si es necesario.
+Escribe aquí el contenido detallado...

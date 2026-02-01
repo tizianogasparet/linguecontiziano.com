@@ -1,16 +1,13 @@
 ---
+// src/pages/[...lang]/[slug].astro
 import MainLayout from '@/components/layout/MainLayout.astro';
-import PostScene from '@/components/blog/PostScene.astro';
 import { getCollection } from 'astro:content';
 import { render } from 'astro:content';
 import { supportedLanguages, defaultLang, type LangCode } from '@/i18n/config';
 import { routes, type RouteKey } from '@/i18n/routes';
 
-// ✅ Genera TUTTE le pagine statiche + legali per TUTTE le lingue
 export async function getStaticPaths() {
   const paths = [];
-
-  // Carica tutte le entry una volta
   const [pages, legals] = await Promise.all([
     getCollection('pages'),
     getCollection('legal')
@@ -20,10 +17,8 @@ export async function getStaticPaths() {
 
   for (const lang of supportedLanguages) {
     for (const [routeKey, slug] of Object.entries(routes[lang])) {
-      // Salta la home (gestita da index.astro)
       if (routeKey === 'home') continue;
 
-      // Verifica che esista un contenuto con quel translationId e lingua
       const exists = allEntries.some(
         entry => entry.data.lang === lang && entry.data.translationId === routeKey
       );
@@ -34,7 +29,7 @@ export async function getStaticPaths() {
             lang: lang === defaultLang ? undefined : lang,
             slug: slug
           },
-          props: { lang, routeKey, slug }
+          props: { lang, routeKey }
         });
       }
     }
@@ -46,12 +41,10 @@ export async function getStaticPaths() {
 interface Props {
   lang: LangCode;
   routeKey: RouteKey;
-  slug: string;
 }
 
 const { lang, routeKey } = Astro.props as Props;
 
-// Recupera l'entry esatta
 const [pageMatch, legalMatch] = await Promise.all([
   getCollection('pages', ({ data }) => 
     data.lang === lang && data.translationId === routeKey
@@ -62,19 +55,47 @@ const [pageMatch, legalMatch] = await Promise.all([
 ]);
 
 const entry = pageMatch[0] || legalMatch[0];
-const isLegal = !!legalMatch[0];
-
 if (!entry) {
   return Astro.redirect(`/${lang}/404`);
 }
 
 const { Content } = await render(entry);
-const { title, description } = entry.data;
-const finalDescription = description || title;
+const { title } = entry.data;
+const isLegal = !!legalMatch[0];
 ---
 
-<MainLayout lang={lang} title={title} description={finalDescription} isLegal={isLegal}>
-  <PostScene title={title}>
-    <Content />
-  </PostScene>
+<MainLayout lang={lang}>
+  <div class="monolith-container">
+    <article class="static-page">
+      <h1 class="monolith-title">{title}</h1>
+      <div class="page-content">
+        <Content />
+      </div>
+    </article>
+  </div>
 </MainLayout>
+
+<style>
+/* Stesso stile di index.astro */
+.static-page {
+  padding: 6rem 0;
+}
+
+.page-content {
+  font-size: 1.2rem;
+  line-height: 1.8;
+  color: var(--text-main);
+}
+
+.page-content :global(h2) {
+  font-size: 2.2rem;
+  color: var(--gold);
+  margin: 3rem 0 1.5rem;
+  text-transform: uppercase;
+  font-weight: 900;
+}
+
+.page-content :global(p) {
+  margin-bottom: 1.5rem;
+}
+</style>

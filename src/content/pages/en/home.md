@@ -1,10 +1,9 @@
 ---
 translationId: "home"
 lang: "en"
-title: "About Me"
-description: "Who I am, how I work, and what I study."
+title: "Home"
 ---
 
-# About Me
+# Home
 
-Contenuto libero.
+This is the homepage content.

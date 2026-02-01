@@ -6,7 +6,6 @@ import { ui } from '@/i18n/ui';
 import MarkdownIt from 'markdown-it';
 import sanitizeHtml from 'sanitize-html';
 
-// ✅ STATIC: nessun `prerender = false`
 export async function getStaticPaths() {
   return supportedLanguages.map(lang => ({ params: { lang } }));
 }
@@ -24,7 +23,8 @@ export async function GET({ params, site }: any) {
     data.lang === lang && !data.draft
   );
 
-  return rss({
+  // ✅ Await the rss() promise
+  const rssResponse = await rss({
     title: ui[lang]?.['site.title'] || ui.en['site.title'],
     description: ui[lang]?.['site.description'] || ui.en['site.description'],
     site: site!,
@@ -34,5 +34,14 @@ export async function GET({ params, site }: any) {
       content: sanitizeHtml(md.render(post.body || ''), sanitizeOptions),
     })),
     customData: `<language>${lang}</language>`,
+  });
+
+  // ✅ Estrai body e headers
+  const body = await rssResponse.text();
+  return new Response(body, {
+    status: 200,
+    headers: {
+      'Content-Type': 'application/xml; charset=utf-8',
+    },
   });
 }

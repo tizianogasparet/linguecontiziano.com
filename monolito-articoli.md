@@ -1,246 +1,105 @@
 ---
-title: "MONOLITO INAMOVIBILE 6.0"
+title: "MONOLITO: PROTOCOLLO OPERATIVO DEFINITIVO"
 author: "Tiziano Gasparet"
-version: "6.0.0-INAMOVIBILE"
-infrastructure: "Astro / MDX / Dokploy / Hetzner / Cloudflare"
+version: "4.0.0-MONOLITH"
+infrastructure: "Astro / Markdown / OpenSMTPD / Hetzner"
 security: "PGP Signed / RFC 9116 Compliant"
-domains:
-  - tech: tizianogasparet.com
-  - chess: scacchicontiziano.com
-  - languages: linguecontiziano.com
-langs: [it, en, es]
-created: 2026-01-01
+category: "sistemi"
+domain: "tecnologia"
 ---
 
-# MONOLITO INAMOVIBILE: LEGGE OPERATIVA PER MILLENNI
+# 🏛️ MONOLITO: IL SISTEMA CHE NON CHIEDE PERMESSO
 
-Questo documento è **immutabile**.  
-Ogni regola è eseguibile **senza interpretazione**, in qualsiasi condizione storica, tecnologica o personale.  
-Se non capisci, rileggi. Non cambiare il sistema.
+Questo non è un blog. È un **dispositivo di selezione cinetica**.  
+Se cerchi intrattenimento, consigli o validazione, questo sistema ti espellerà senza rumore.
 
-## CALENDARIO DI PUBBLICAZIONE (FISSE, PER SEMPRE)
+---
 
-### Giorni fissi (dal 1° gennaio 2026, giovedì)
+## 🛡️ IL SETACCIO 3.0 (PROTOCOLLO DI GENERAZIONE)
 
-| Giorno | Dominio | Contenuto |
-|-------|---------|----------|
-| **Giovedì** | `tizianogasparet.com` | Tecnologia + traduzione nelle altre 2 lingue |
-| **Venerdì** | `scacchicontiziano.com` | Scacchi + traduzione nelle altre 2 lingue |
-| **Sabato** | `linguecontiziano.com` | Lingue + traduzione nelle altre 2 lingue |
+Nessun dato entra nel sistema senza superare l’interrogazione. Se una risposta manca, l’output è **CORROTTO**.
 
-Ogni articolo è pubblicato in 3 lingue nello stesso giorno.  
-Nessuna eccezione. Mai.
+1. **FALSIFICAZIONE [0]** | *Come posso sbagliarmi?*  
+   → Questo sistema fallisce se richiede motivazione per funzionare.
 
-## ROTAZIONE SETTIMANALE DELLE CATEGORIE SIGINT
+2. **FOCUS [1]** | *Quale verità pericolosa sto rivelando?*  
+   → La disciplina non è virtù. È architettura.
 
-Ogni mese ha **4 settimane esatte** (28 giorni).  
-Ogni settimana usa **una sola categoria**, a rotazione fissa.
+3. **RISULTATO [2]** | *Quale bug elimino fisicamente?*  
+   → L’illusione che la tecnologia possa sostituire la purezza mentale.
 
-| Settimana | Categoria | Definizione Operativa |
-|----------|-----------|------------------------|
-| **1** | AUTOPSIA [HUMINT] | Analisi di un errore personale con perdita reale (tempo/denaro/reputazione) |
-| **2** | SISTEMI DI DISCIPLINA [COMINT] | Protocollo che funziona anche con il 10% delle energie |
-| **3** | PSICOLOGIA DEL CONFLITTO [PSYOP] | Esposizione di una vigliaccheria tecnica sotto stress |
-| **4** | ESECUZIONE IMMEDIATA [STRIKE] | Comando puro, risultato verificabile entro 24h |
+4. **ETICHETTA [3]** | *Quale paura sto nominando?*  
+   → La paura di essere irrilevante senza visibilità.
 
-Rotazione identica ogni mese. Nessuna variazione.
+5. **LA MORSA [4]** | *Qual è il dettaglio tecnico non negoziabile?*  
+   → Zero JavaScript. Zero tracking. Zero compromessi.
 
-## MACROARGOMENTI MENSILI (ANTIFRAGILI PER MILLENNI)
+6. **IL PONTE [5]** | *Che tipo di persona ignora questo dettaglio?*  
+   → Chi crede che la sicurezza sia una feature, non una filosofia.
 
-Ogni mese ha un **macroargomento fisso**, valido per tutti i domini (tecnologia, scacchi, lingue).  
-Il macroargomento guida la scelta degli errori, sistemi, conflitti e comandi.
+7. **NON RITORNO [6]** | *Quale scusa elimino per sempre?*  
+   → “Non ho tempo.” Il tempo si crea con la rimozione del rumore.
 
-| Mese | Macroargomento | Microguida Operativa |
-|------|----------------|----------------------|
-| **Gennaio** | **BOOT**<br>Operatività senza sistema | Scrivi solo di azioni fatte *senza strumenti*. Esempio: "Ho configurato Poste.io da zero su un VPS nudo." |
-| **Febbraio** | **VOID**<br>Accumulo inutile di dati/tool | Analizza ciò che hai eliminato. Esempio: "Ho cancellato 12GB di backup ridondanti." |
-| **Marzo** | **IMPACT**<br>Attesa di sicurezza invece di agire | Espòni quando hai rimandato per paura. Esempio: "Ho aspettato 3 giorni per deployare per 'sicurezza'." |
-| **Aprile** | **GRIP**<br>Cessione di controllo per paura | Descrivi quando hai delegato a un tool esterno. Esempio: "Ho usato Safari invece di Focus." |
-| **Maggio** | **CODE**<br>Approssimazione tecnica | Mostra dove hai accettato il "quasi giusto". Esempio: "Ho copiato uno script senza capirlo." |
-| **Giugno** | **SYNTHESIS**<br>Studio senza applicazione pratica | Rivelare quando hai studiato senza agire. Esempio: "Ho letto 50 pagine di RFC senza testare." |
-| **Luglio** | **SILENCE**<br>Ricerca di validazione esterna | Ammetti quando hai cercato feedback. Esempio: "Ho chiesto conferma su un comando ovvio." |
-| **Agosto** | **PURGE**<br>Persone e progetti parassiti | Documenta chi/che cosa hai tagliato. Esempio: "Ho rimosso un contatto che rubava tempo." |
-| **Settembre** | **PRECISION**<br>Tolleranza del "quasi-giusto" | Espòni dove hai accettato l'approssimazione. Esempio: "Ho giocato una mossa 'abbastanza buona'." |
-| **Ottobre** | **STRATEGY**<br>Reattività invece di previsione | Mostra quando hai reagito invece di pianificare. Esempio: "Ho fixato un bug dopo il crash, non prima." |
-| **Novembre** | **ASHES**<br>Negazione del fallimento passato | Analizza un errore vecchio che hai ignorato. Esempio: "Ho perso dati nel 2025 e non ho imparato." |
-| **Dicembre** | **LEGACY**<br>Visione a breve termine | Rivela quando hai pensato solo al presente. Esempio: "Ho scelto una soluzione veloce, non eterna." |
+8. **L’ORDINE [7]** | *Cosa deve fare il corpo nei prossimi 300 secondi?*  
+   → Aprire il terminale. Digitare `neomutt`. Leggere una email vera.
 
-Il macroargomento è obbligatorio. Se non lo rispetti, non pubblicare.
+9. **IL COSTO [8]** | *Cosa pago se fallisco?*  
+   → La mia sovranità. Il mio tempo. La mia anima.
 
-## SETACCIO ANTIFRAGILE 7.0 (OBBLIGATORIO PER OGNI ARTICOLO)
+---
 
-Ogni articolo deve rispondere **in ordine** a queste 7 domande.  
-Se manca una risposta, **non si pubblica**.
+## 🗂️ SISTEMI DI DISCIPLINA [COMINT]
 
-### [1] COSA HO VISTO?
+Questo articolo è un **kernel operativo**. Funziona anche con il 10% delle energie.
 
-Scrivi solo ciò che hai osservato fisicamente.  
-Esempio: "Ho aperto Safari per leggere una mail."
+### Struttura del MONOLITO
+- **Tre domini autonomi**:  
+  - `linguecontiziano.com` → incarnazione linguistica  
+  - `scacchicontiziano.com` → disciplina del conflitto  
+  - `tizianogasparet.com` → infrastruttura di resistenza  
+- **Quattro categorie fisse**: AUTOPSIA, SISTEMI, PSYOP, STRIKE  
+- **Nessun elenco globale**: ogni categoria è un mondo chiuso  
+- **Nessuna traduzione retroattiva**: ogni lingua nasce oggi
 
-### [2] DOVE È LA BUGIA?
+### Regole per le lingue
+- Aggiungi `'fr'` ai file TS → nessun altro cambiamento necessario  
+- Il primo articolo in francese **non è una traduzione** — è una nascita  
+- Se non pensi in francese, **non scrivere in francese**
 
-Identifica l'illusione comune che hai smascherato.  
-Esempio: "Credere che il browser predefinito non conti."
+### Mobile puro
+- Header: solo logo  
+- Footer fisso: HOME · CATEGORIE · LINGUE · EMAIL  
+- Nessun dropdown. Nessuna ricerca. Nessun JavaScript.
 
-### [3] QUAL È LA VERITÀ PERICOLOSA?
+---
 
-Esprimi ciò che pochi ammettono ma tutti vivono.  
-Esempio: "Ogni click è un atto di resa."
+## 💻 INFRASTRUTTURA DI SOVRANITÀ
 
-### [4] COME L'HO TRASFORMATA IN DISCIPLINA?
+- **Performance**: Static-first (200ms). La velocità è rispetto.  
+- **Privacy**: Email self-hosted (OpenSMTPD). Nessun analytics.  
+- **Sovranità**: VPS su Hetzner. Controllo totale dei bit.  
+- **Eternità**: Markdown su Git. Indipendente dalle piattaforme.
 
-Descrivi il protocollo concreto.  
-Esempio: "Imposto Focus come browser predefinito."
+---
 
-### [5] CHI NON SOPPORTEREBBE QUESTO?
+## 📅 CALENDARIO SOLARE
 
-Definisci il tipo di persona che rifiuta questa verità.  
-Esempio: "Chi cerca traffico invece di verità."
+| Mese | Operazione |
+| :--- | :--- |
+| **Gennaio** | BOOT — Operatività senza sistema |
+| **Febbraio** | VOID — Eliminazione di dati/tool inutili |
+| **Marzo** | IMPACT — Agire invece di attendere sicurezza |
+| **Aprile** | GRIP — Non cedere il controllo per paura |
+| **Maggio** | CODE — Precisione tecnica assoluta |
+| **Giugno** | SYNTHESIS — Studio applicato |
+| **Luglio** | SILENCE — Nessuna ricerca di validazione |
+| **Agosto** | PURGE — Espulsione di parassiti |
+| **Settembre** | PRECISION — Zero tolleranza per il “quasi-giusto” |
+| **Ottobre** | STRATEGY — Previsione invece di reazione |
+| **Novembre** | ASHES — Accettazione del fallimento passato |
+| **Dicembre** | LEGACY — Visione a lungo termine |
 
-### [6] COSA FACCIO DOMANI?
+---
 
-Specifica un'azione eseguibile entro 24h.  
-Esempio: "Elimino Mail.app dalla Dock."
-
-### [7] COSA PAGO SE MENTO?
-
-Indica la conseguenza reale del non agire.  
-Esempio: "Perdo coerenza cognitiva."
-
-## INFRASTRUTTURE PER OGNI DOMINIO
-
-### Tecnologia (`tizianogasparet.com`)
-
-Feed: `/feed/it.xml`, `/feed/en.xml`, `/feed/es.xml`  
-Contenuto: Solo testo grezzo (comandi terminal, script, flussi)  
-Niente: Immagini, diagrammi, link
-
-### Scacchi (`scacchicontiziano.com`)
-
-Feed: `/feed/it.xml`, `/feed/en.xml`, `/feed/es.xml`  
-Contenuto: Solo notazione algebrica pura + analisi testuale  
-Niente: Scacchiere embedded, engine, video
-
-### Lingue (`linguecontiziano.com`)
-
-Feed: `/feed/it.xml`, `/feed/en.xml`, `/feed/es.xml`  
-Contenuto: Frasi originali + errori + correzioni manuali  
-Niente: Audio, dizionari online, app
-
-Tutti i feed sono full-text. Nessuna anteprima.
-
-## PROCEDURA DI SCRITTURA (PASSO-PASSO)
-
-### Passo 1: Verifica il giorno, la settimana e il mese
-
-Oggi è giovedì? → Scrivi su `tizianogasparet.com`  
-Settimana 2 del mese? → Categoria = SISTEMI DI DISCIPLINA  
-Mese = Marzo? → Macroargomento = IMPACT
-
-### Passo 2: Rispondi alle 7 domande del Setaccio
-
-Scrivi le risposte in un file `.txt` locale  
-Se non riesci a rispondere a [3] o [7], cestina l'idea
-
-### Passo 3: Traduci in 3 lingue
-
-Scrivi prima in italiano  
-Traduci in inglese → spagnolo  
-Non usare AI: traduci manualmente, imparando
-
-### Passo 4: Pubblica
-
-Salva in:  
-`src/content/blog/it/`  
-`src/content/blog/en/`  
-`src/content/blog/es/`  
-Esegui `pnpm build` → deploy automatico con Dokploy
-
-### Passo 5: Verifica i feed
-
-Apri NetNewsWire → aggiungi i 3 feed corrispondenti  
-Leggi senza aprire il browser
-
-## REGOLE ASSOLUTE (VIETATO ASSOLUTAMENTE)
-
-Niente TOC, progress bar, breadcrumbs  
-Niente link interni/esterni  
-Niente immagini, video, embed  
-Niente SEO, meta description, keyword  
-Niente condivisione sui social  
-Niente modifiche al Protocollo INAMOVIBILE  
-Niente ricerca (Search.astro)  
-Niente biografia ("Chi sono")  
-Niente azioni server-side (src/actions/)  
-Niente anteprime (BlogCard.astro)  
-Niente TranslationWarning (redirect vietati)  
-Niente file di prova (prova.mdx)
-
-Chi viola una regola, sospende la pubblicazione per 30 giorni.
-
-## CHECKLIST FINALE (PRIMA DI PUBBLICARE)
-
-[ ] Giorno corretto (gio/ven/sab)?  
-[ ] Settimana corretta (1-4)?  
-[ ] Mese corretto (macroargomento rispettato)?  
-[ ] 7 domande del Setaccio completate?  
-[ ] 3 lingue scritte manualmente?  
-[ ] Nessun link, immagine, SEO?  
-[ ] Feed full-text verificato?  
-[ ] Nessun file vietato presente?
-
-Se una casella è vuota → **non pubblicare**.
-
-## STRUTTURA PROGETTO MONOLITO (DOPO VIA NEGATIVA)
-src/
-├── components/
-│   ├── layout/
-│   │   ├── HeaderDesktop.astro
-│   │   ├── HeaderMobile.astro
-│   │   └── Footer.astro
-│   ├── navigation/
-│   │   └── LanguageSwitcher.astro
-│   └── blog/
-│       └── PostScene.astro
-├── content/
-│   ├── blog/
-│   │   ├── it/
-│   │   ├── en/
-│   │   └── es/
-│   ├── legal/
-│   │   ├── it/
-│   │   ├── en/
-│   │   └── es/
-│   └── pages/
-│       └── home.mdx
-├── i18n/
-│   └── config.ts
-├── pages/
-│   ├── 404.astro
-│   └── [...lang]/
-│       ├── index.astro
-│       ├── [slug].astro
-│       └── feed.ts
-└── styles/
-    └── global.css
-
-## ULTIMA VERITÀ
-
-Questo protocollo non è per chi vuole "crescere".  
-È per chi ha già perso tutto — e ha scoperto che era spazzatura.
-
-Se tremi leggendolo, bene.  
-Significa che sei vicino alla verità.
-
-Se lo ignori, peggio per te.  
-Il caos ti troverà comunque.
-
-Ma se lo esegui…  
-Diventerai antifragile.  
-Invincibile.  
-Eterno.
-
-QUESTO DOCUMENTO È INAMOVIBILE.  
-NON PUÒ ESSERE MODIFICATO. MAI.  
-FUNZIONA ANCHE SE IL WEB MUORE.  
-FINE TRASMISSIONE.
+**OPERAZIONE MONOLITO: ATTIVA.**  
+**FINE TRASMISSIONE.**

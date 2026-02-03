@@ -6,10 +6,10 @@ import { LANGUAGES_TUPLE } from '@/i18n/config';
 
 const langEnum = z.enum(LANGUAGES_TUPLE);
 
+// Schema base: SOLO lang (obbligatorio), niente translationId
 const baseSchema = z.object({
   title: z.string().min(1),
   lang: langEnum,
-  translationId: z.string().min(1),
 });
 
 const blog = defineCollection({

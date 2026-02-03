@@ -1,0 +1,45 @@
+name: Deploy Astro Rootless Podman
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Deploy to VPS via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: 69.62.112.62
+          username: tiziano
+          port: 7777
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            # Entra nella cartella e aggiorna il codice
+            cd ~/linguecontiziano
+            # Se la cartella è vuota, clona, altrimenti tira i cambiamenti
+            if [ ! -d ".git" ]; then
+              git clone https://github.com/TUO_UTENTE/linguecontiziano.git .
+            else
+              git pull origin main
+            fi
+
+            # Build dell'immagine Podman
+            podman build -t lingue-site .
+
+            # Ferma il vecchio container se esiste
+            podman stop lingue-app || true
+            podman rm lingue-app || true
+
+            # Avvia il nuovo container (Rootless)
+            podman run -d \
+              --name lingue-app \
+              -p 4321:4321 \
+              --restart always \
+              lingue-site
+
+            # Pulizia: elimina le vecchie immagini inutilizzate per risparmiare spazio
+            podman image prune -f

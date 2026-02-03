@@ -13,6 +13,6 @@ Ogni lingua qui non è tradotta — è **pensata dal suo interno**.
 - **[Autopsia dell’errore](/it/blog/autopsia-dell-errore)** → Analisi clinica di fallimenti reali  
 - **[Sistemi di disciplina](/it/blog/sistemi-di-disciplina)** → Protocolli immutabili  
 - **[Psicologia del conflitto](/it/blog/psicologia-del-conflitto)** → Dominio mentale sotto stress  
-- **[Esecuzione immediata](/it/blog/esecuzione-immediata)** → Comando puro, azione zero-rumore
+- **[Esecuzione immediata](/it/blog/esecuzione-immediata)** →  puro, azione zero-rumore
 
 > Il sistema richiede disciplina, non consenso.

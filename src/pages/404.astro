@@ -5,7 +5,7 @@ import { useTranslations } from '@/i18n/ui';
 import { getLocalizedPath } from '@/i18n/routes';
 import { supportedLanguages, defaultLang, type LangCode } from '@/i18n/config';
 
-// ✅ SOLO QUESTO FILE È SSR
+// SOLO QUESTO FILE È SSR
 export const prerender = false;
 
 const pathSegments = Astro.url.pathname.split('/').filter(Boolean);

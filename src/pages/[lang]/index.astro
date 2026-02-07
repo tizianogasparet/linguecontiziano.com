@@ -1,0 +1,18 @@
+---
+import MainLayout from '@/components/layout/MainLayout.astro';
+import { getEntry, render } from 'astro:content';
+import { LANGUAGES_TUPLE, type LangCode } from '@/i18n/config';
+
+export function getStaticPaths() {
+  return LANGUAGES_TUPLE.filter(l => l !== 'en').map(lang => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params as { lang: LangCode };
+const entry = await getEntry('pages', `${lang}/home`);
+if (!entry) throw new Error(`Missing: src/content/pages/${lang}/home.md`);
+
+const { Content } = await render(entry);
+---
+<MainLayout title={entry.data.title} description={entry.data.description} lang={lang}>
+  <Content />
+</MainLayout>

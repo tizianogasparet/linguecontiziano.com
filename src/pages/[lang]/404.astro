@@ -1,0 +1,62 @@
+
+---
+import MainLayout from '@/components/layout/MainLayout.astro';
+import { useTranslations } from '@/i18n/ui';
+import { getLocalizedPath } from '@/i18n/routes';
+import { LANGUAGES_TUPLE, type LangCode } from '@/i18n/config';
+
+// NESSO LOGICO: Esportazione obbligatoria per rotte dinamiche statiche
+export function getStaticPaths() {
+  // Generiamo la 404 solo per IT ed ES. 
+  // La 404 inglese è gestita da src/pages/404.astro (root)
+  return LANGUAGES_TUPLE
+    .filter(l => l !== 'en')
+    .map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params as { lang: LangCode };
+const t = useTranslations(lang);
+const homeLink = getLocalizedPath(lang, 'home');
+---
+
+<MainLayout title={t('error.404.title')} lang={lang}>
+  <div class="monolith-container">
+    <article class="error-404">
+      <h1 class="monolith-title">404</h1>
+      <p class="error-message">{t('error.404.title')}</p>
+      <a href={homeLink} class="back-link">{t('error.404.back')}</a>
+    </article>
+  </div>
+</MainLayout>
+
+<style>
+  .error-404 { 
+    padding: 8rem 0; 
+    text-align: center; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .monolith-title { font-size: 5rem; color: var(--gold); margin: 0; line-height: 1; }
+  .error-message {
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    margin: 2rem 0;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .back-link {
+    display: inline-block;
+    color: var(--text-main);
+    text-decoration: none;
+    font-weight: 900;
+    border: 1px solid var(--gold);
+    padding: 1rem 2rem;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+  }
+  .back-link:hover { 
+    background: var(--gold); 
+    color: var(--bg-black); 
+  }
+</style>

@@ -2,17 +2,9 @@
 import MainLayout from '@/components/layout/MainLayout.astro';
 import BlogCard from '@/components/blog/BlogCard.astro';
 import { getCollection } from 'astro:content';
-import { LANGUAGES_TUPLE, type LangCode } from '@/i18n/config';
 import { useTranslations } from '@/i18n/ui';
 
-export function getStaticPaths() {
-  // ESCLUDIAMO 'en' per evitare la cartella /en/blog/
-  return LANGUAGES_TUPLE
-    .filter(lang => lang !== 'en')
-    .map(lang => ({ params: { lang } }));
-}
-
-const { lang } = Astro.params as { lang: LangCode };
+const lang = 'en'; // Hardcoded per la root
 const t = useTranslations(lang);
 
 const posts = (await getCollection('blog', ({ data }) => {

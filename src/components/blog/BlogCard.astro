@@ -1,40 +1,45 @@
 ---
-// BlogCard.astro — SOLO PER BLOG
+// BlogCard.astro — Componente per la visualizzazione delle analisi del Monolito
+import type { CollectionEntry } from 'astro:content';
 import { useTranslations } from '@/i18n/ui';
+import { getLocalizedPath, routes } from '@/i18n/routes';
+import type { LangCode } from '@/i18n/config';
 
 interface Props {
-  title: string;
-  description?: string;
-  href: string;
-  date: Date | string;
-  author: string;
-  categoryLabel: string;
-  lang: string;
+  post: CollectionEntry<'blog'>;
 }
 
-const { title, description, href, date, author, categoryLabel, lang } = Astro.props;
-const t = useTranslations(lang as any);
+const { post } = Astro.props;
+const { title, description, pubDate, lang, category } = post.data;
 
-let formattedDate = '';
-let isoDate = '';
-if (date) {
-  const d = typeof date === 'string' ? new Date(date) : date;
-  if (!isNaN(d.getTime())) {
-    formattedDate = d.toLocaleDateString(lang, {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
-    });
-    isoDate = d.toISOString();
-  }
-}
+const t = useTranslations(lang as LangCode);
+
+// Nesso Logico: Calcolo dello URL localizzato
+// 1. Estraiamo lo slug del file (es. "it/prova.md" -> "prova")
+const postSlug = post.id.split('/').slice(1).join('/').replace(/\.md$/, '');
+// 2. Recuperiamo lo slug localizzato della categoria da routes.ts
+const categorySlug = routes[lang as LangCode][category];
+// 3. Generiamo il path finale completo
+const href = getLocalizedPath(lang as LangCode, 'blog', `${categorySlug}/${postSlug}`);
+
+// Formattazione data deterministica
+const formattedDate = pubDate.toLocaleDateString(lang, {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric'
+});
+const isoDate = pubDate.toISOString();
+
+// In un Monolito, l'autore è sempre Tiziano Gasparet
+const author = "Tiziano Gasparet";
+const categoryLabel = category.replace('cat-', '').toUpperCase();
 ---
 
 <a href={href} class="blog-card">
   <article>
     <div class="card-meta">
       <span class="meta-category">{categoryLabel}</span>
-      {formattedDate && <time class="meta-date" datetime={isoDate}>{formattedDate}</time>}
+      <time class="meta-date" datetime={isoDate}>{formattedDate}</time>
       <span class="meta-author">{author}</span>
     </div>
     <h3 class="card-title">{title}</h3>
@@ -54,6 +59,7 @@ if (date) {
   transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
   height: 100%;
+  text-decoration: none;
 }
 
 .blog-card:hover {
@@ -74,7 +80,7 @@ if (date) {
 .meta-category,
 .meta-date,
 .meta-author {
-  font-family: var(--font-mono);
+  font-family: var(--font-mono, monospace);
   font-size: 0.75rem;
   color: var(--gold);
   letter-spacing: 0.1em;
@@ -88,7 +94,7 @@ if (date) {
   line-height: 1.2;
   margin-bottom: 1rem;
   text-transform: uppercase;
-  color: var(--text-main);
+  color: var(--text-main, #ffffff);
   transition: color 0.3s;
 }
 
@@ -98,7 +104,7 @@ if (date) {
 
 .card-desc {
   font-size: 0.95rem;
-  color: var(--text-muted);
+  color: var(--text-muted, #888);
   line-height: 1.5;
   margin-bottom: 2rem;
   display: -webkit-box;

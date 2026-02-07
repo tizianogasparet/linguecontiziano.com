@@ -1,18 +1,26 @@
 import rss from '@astrojs/rss';
 import { getCollection } from 'astro:content';
+import { ui } from '@/i18n/ui';
 
 export async function GET(context: any) {
-  const blog = await getCollection('blog');
+  const blog = await getCollection('blog', ({ data }) => !data.draft);
+  
   return rss({
-    title: 'Lingue con Tiziano',
-    description: 'Scacchi, Tecnologia e Lingue sotto un unico Monolito',
+    title: ui.en['site.title'],
+    description: ui.en['site.description'],
     site: context.site,
-    items: blog.map((post) => ({
-      title: post.data.title,
-      pubDate: post.data.pubDate,
-      description: post.data.description,
-      // Genera link come /it/blog/titolo o /blog/titolo per inglese
-      link: `${post.id.split('/')[0] === 'en' ? '' : '/' + post.id.split('/')[0]}/blog/${post.id.split('/').slice(1).join('/')}`,
-    })),
+    items: blog.map((post) => {
+      // post.id è tipo "it/titolo.md" o "en/title.md"
+      const [lang, ...slugParts] = post.id.split('/');
+      const slug = slugParts.join('/').replace(/\.md$/, '');
+      const prefix = lang === 'en' ? '' : `/${lang}`;
+      
+      return {
+        title: post.data.title,
+        pubDate: post.data.pubDate,
+        description: post.data.description,
+        link: `${prefix}/blog/${slug}`,
+      };
+    }),
   });
 }

@@ -1,0 +1,60 @@
+---
+import MainLayout from '@/components/layout/MainLayout.astro';
+import BlogCard from '@/components/blog/BlogCard.astro';
+import { getCollection } from 'astro:content';
+import { routes, type RouteKey } from '@/i18n/routes';
+import { LANGUAGES_TUPLE, type LangCode } from '@/i18n/config';
+
+export async function getStaticPaths() {
+  const paths = [];
+
+  for (const lang of LANGUAGES_TUPLE) {
+    // Definiamo quali chiavi del router sono categorie
+    const categoryKeys: RouteKey[] = ['cat-autopsia', 'cat-sistemi', 'cat-psicologia', 'cat-esecuzione'];
+
+    for (const key of categoryKeys) {
+      const categorySlug = routes[lang][key];
+      paths.push({
+        params: { lang, category: categorySlug },
+        props: { categoryKey: key }
+      });
+    }
+  }
+  return paths;
+}
+
+const { lang, category } = Astro.params as { lang: LangCode, category: string };
+const { categoryKey } = Astro.props;
+
+const posts = (await getCollection('blog', ({ data }) => {
+  return data.lang === lang && data.category === categoryKey && !data.draft;
+})).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<MainLayout title={`${category} | Blog`} lang={lang}>
+  <section class="monolith-container">
+    <header class="category-header">
+      <span class="label">Categoria</span>
+      <h1 class="monolith-title">{category.replace(/-/g, ' ')}</h1>
+    </header>
+
+    <div class="blog-grid">
+      {posts.length > 0 ? (
+        posts.map(post => <BlogCard post={post} />)
+      ) : (
+        <p class="empty-state">Nessuna analisi disponibile per questa categoria.</p>
+      )}
+    </div>
+  </section>
+</MainLayout>
+
+<style>
+  .category-header { margin-bottom: 4rem; text-align: center; }
+  .label { color: var(--gold); text-transform: uppercase; letter-spacing: 0.2em; font-size: 0.8rem; }
+  .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+  .empty-state { color: var(--text-muted); font-style: italic; }
+</style>

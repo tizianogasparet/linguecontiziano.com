@@ -1,48 +1,14 @@
 ---
-// src/pages/404.astro
 import MainLayout from '@/components/layout/MainLayout.astro';
 import { useTranslations } from '@/i18n/ui';
-import { getLocalizedPath } from '@/i18n/routes';
-import { supportedLanguages, defaultLang, type LangCode } from '@/i18n/config';
+import { defaultLang } from '@/i18n/config';
 
-const pathSegments = Astro.url.pathname.split('/').filter(Boolean);
-const rawLang = pathSegments[0] || defaultLang;
-const lang: LangCode = supportedLanguages.includes(rawLang as LangCode)
-  ? (rawLang as LangCode)
-  : defaultLang;
-
-const t = useTranslations(lang);
-const homeLink = getLocalizedPath(lang, 'home');
+const t = useTranslations(defaultLang);
 ---
-
-<MainLayout lang={lang}>
-  <div class="monolith-container">
-    <article class="error-404">
-      <h1 class="monolith-title">404</h1>
-      <p class="error-message">{t('error.404.title')}</p>
-      <a href={homeLink} class="back-link">{t('error.404.back')}</a>
-    </article>
+<MainLayout title="404" lang={defaultLang}>
+  <div class="monolith-container" style="text-align: center; padding: 10rem 0;">
+    <h1 style="font-size: 5rem; color: var(--gold);">404</h1>
+    <p>{t('error.404.title')}</p>
+    <a href="/" style="color: var(--gold); text-decoration: underline;">HOME</a>
   </div>
 </MainLayout>
-
-<style>
-.error-404 { padding: 6rem 0; text-align: center; }
-.error-message {
-  font-size: 1.2rem;
-  color: var(--text-muted);
-  margin: 2rem 0;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-.back-link {
-  display: inline-block;
-  color: var(--gold);
-  text-decoration: none;
-  font-weight: 900;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  font-size: 0.9rem;
-  transition: var(--transition);
-}
-.back-link:hover { color: var(--gold-deep); }
-</style>

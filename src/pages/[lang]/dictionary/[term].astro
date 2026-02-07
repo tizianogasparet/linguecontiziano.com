@@ -1,0 +1,28 @@
+---
+import MainLayout from '@/components/layout/MainLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const dictionary = await getCollection('dictionary');
+  return dictionary.map(entry => {
+    const [lang, term] = entry.id.split('/');
+    return {
+      params: { lang, term: term.replace(/\.md$/, '') },
+      props: { entry },
+    };
+  });
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<MainLayout title={entry.data.title} description={entry.data.description} lang={entry.data.lang as any}>
+  <div class="dictionary-entry">
+    <header>
+      <h1>{entry.data.title}</h1>
+      <span class="ipa">{entry.data.ipa}</span>
+    </header>
+    <Content />
+  </div>
+</MainLayout>

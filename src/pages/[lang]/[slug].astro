@@ -1,0 +1,41 @@
+---
+import MainLayout from '@/components/layout/MainLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const pages = await getCollection('pages');
+  const legal = await getCollection('legal');
+
+  const allEntries = [...pages, ...legal];
+
+  return allEntries.flatMap(entry => {
+    const [lang, ...slugParts] = entry.id.split('/');
+    const rawSlug = slugParts.join('/').replace(/\.md$/, '');
+    
+    // Escludiamo la home poiché ha il suo file fisico index.astro
+    if (rawSlug === 'home') return [];
+
+    return {
+      params: { lang, slug: rawSlug },
+      props: { entry },
+    };
+  });
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<MainLayout 
+  title={entry.data.title} 
+  description={"description" in entry.data ? entry.data.description : undefined} 
+  lang={entry.data.lang}
+>
+  <article class="monolith-article">
+    <h1>{entry.data.title}</h1>
+    {"updateDate" in entry.data && (
+      <p class="last-update">Versione del: {entry.data.updateDate.toLocaleDateString()}</p>
+    )}
+    <Content />
+  </article>
+</MainLayout>

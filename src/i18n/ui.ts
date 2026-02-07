@@ -28,6 +28,9 @@ export const ui = {
     'blog.author': 'Author',
     'blog.published': 'Published',
     'blog.discover-more': 'DISCOVER →',
+    'blog.title': 'The Monolith Blog',
+    'blog.description': 'Operational analysis and strategic insights.',
+    'blog.no-posts': 'No posts found in this category.',
   },
   it: {
     'site.title': 'Tiziano Gasparet | Strategia',
@@ -55,6 +58,9 @@ export const ui = {
     'blog.author': 'Autore',
     'blog.published': 'Pubblicato',
     'blog.discover-more': 'SCOPRI →',
+    'blog.title': 'Blog Monolito',
+    'blog.description': 'Analisi operative e intuizioni strategiche.',
+    'blog.no-posts': 'Nessun articolo trovato in questa categoria.',
   },
   es: {
     'site.title': 'Tiziano Gasparet | Estrategia',
@@ -82,6 +88,9 @@ export const ui = {
     'blog.author': 'Autor',
     'blog.published': 'Publicado',
     'blog.discover-more': 'DESCUBRIR →',
+    'blog.title': 'Blog Monolito',
+    'blog.description': 'Análisis operativos e ideas estratégicas.',
+    'blog.no-posts': 'No se encontraron artículos en esta categoría.',
   },
 } as const;
 

@@ -1,10 +1,7 @@
 ---
-translationId: "privacy"
-lang: "en"
 title: "Privacy Policy"
-updateDate: 2026-01-19
+lang: "en"
+updateDate: 2026-02-07
 ---
-
-## Privacy Policy
-
-This is a placeholder text for the legal page.
+# PRIVACY POLICY
+This system is designed for data sovereignty. I do not collect, track, or store any personal information from visitors. There are no user databases or third-party profiling tools.

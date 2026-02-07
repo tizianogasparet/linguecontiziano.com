@@ -1,16 +1,17 @@
 ---
-// MainLayout.astro
-import '../../styles/global.css';
+import '@/styles/global.css';
 import HeaderDesktop from '@/components/layout/HeaderDesktop.astro';
 import HeaderMobile from '@/components/layout/HeaderMobile.astro';
 import Footer from '@/components/layout/Footer.astro';
 import { languages, defaultLang, type LangCode } from '@/i18n/config';
 
 interface Props {
+  title: string;
+  description?: string;
   lang?: LangCode;
 }
 
-const { lang = defaultLang } = Astro.props;
+const { title, description, lang = defaultLang } = Astro.props;
 const htmlDir = languages[lang]?.dir ?? 'ltr';
 ---
 
@@ -19,8 +20,10 @@ const htmlDir = languages[lang]?.dir ?? 'ltr';
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="robots" content="noindex, nofollow" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+    <meta name="generator" content={Astro.generator} />
     <slot name="head" />
   </head>
   <body>
@@ -30,7 +33,7 @@ const htmlDir = languages[lang]?.dir ?? 'ltr';
     <div class="mobile-only">
       <HeaderMobile lang={lang} />
     </div>
-    <main>
+    <main id="main-content">
       <div class="monolith-container">
         <slot />
       </div>

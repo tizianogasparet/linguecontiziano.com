@@ -1,18 +1,7 @@
 ---
 title: "Lingue con Tiziano | Strategia"
-lang: it
+description: "Analisi profonda di sistemi di disciplina, autopsia dell'errore e psicologia del conflitto."
+lang: "it"
 ---
-
-# LINGUE COME MONDI MENTALI
-
-Questo non è un blog. È un laboratorio di incarnazione linguistica.  
-Ogni lingua qui non è tradotta — è **pensata dal suo interno**.
-
-## CATEGORIE OPERATIVE
-
-- **[Autopsia dell’errore](/it/blog/autopsia-dell-errore)** → Analisi clinica di fallimenti reali  
-- **[Sistemi di disciplina](/it/blog/sistemi-di-disciplina)** → Protocolli immutabili  
-- **[Psicologia del conflitto](/it/blog/psicologia-del-conflitto)** → Dominio mentale sotto stress  
-- **[Esecuzione immediata](/it/blog/esecuzione-immediata)** → Comando puro, azione zero-rumore
-
-> Il sistema richiede disciplina, non consenso.
+# BENVENUTO NEL MONOLITO
+Questo spazio non è un blog, ma un dispositivo di selezione cinetica. Qui la tecnologia incontra la strategia pura.

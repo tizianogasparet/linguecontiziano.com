@@ -1,10 +1,7 @@
 ---
-translationId: "privacy"
+title: "Política de Cookies"
 lang: "es"
-title: "Privacy Policy"
-updateDate: 2026-01-19
+updateDate: 2026-02-07
 ---
-
-## Privacy Policy
-
-This is a placeholder text for the legal page.
+# POLÍTICA DE COOKIES
+El Monolito è "Libre de Cookies". No se instalan cookies técnicas, analíticas o de perfilado en el navegador del usuario. La navegación es pura y libre de rastreadores persistentes.

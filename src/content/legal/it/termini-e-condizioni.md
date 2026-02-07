@@ -1,10 +1,7 @@
 ---
-translationId: "privacy"
+title: "Termini e Condizioni"
 lang: "it"
-title: "Privacy Policy"
-updateDate: 2026-01-19
+updateDate: 2026-02-07
 ---
-
-## Privacy Policy
-
-This is a placeholder text for the legal page.
+# TERMINI E CONDIZIONI
+I contenuti sono distribuiti "così come sono" per scopo puramente informativo e strategico. L'utilizzo delle tecniche descritte (tecnologiche, scacchistiche o linguistiche) avviene sotto la totale responsabilità dell'utente.

@@ -1,17 +1,9 @@
 ---
-translationId: placeholder-001
-lang: es
-title: TÍTULO DEL ARTÍCULO
-description: Breve descripción del artículo.
-pubDate: 2026-01-01
-category: cat-sistemi
+title: "Autopsia de un fallo técnico"
+description: "Análisis clínico de un error de configuración en OpenBSD."
+lang: "es"
+pubDate: 2026-02-07
+category: "cat-autopsia"
 draft: false
 ---
-
-# TÍTULO DEL ARTÍCULO
-
-- Punto clave 1
-- Punto clave 2
-- Punto clave 3
-
-Escribe aquí el contenido detallado...
+El error no es un evento desafortunado; son datos mal interpretados...

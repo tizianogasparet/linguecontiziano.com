@@ -4,7 +4,7 @@ import type { LangCode } from './config';
 export type RouteKey =
   | 'home'
   | 'blog'
-  | 'about'
+  | 'dictionary'
   | 'privacy'
   | 'cookie'
   | 'terms'
@@ -18,7 +18,7 @@ export const routes: Record<LangCode, Record<RouteKey, string>> = {
   en: {
     home: '',
     blog: 'blog',
-    about: 'about',
+    dictionary: 'dictionary',
     privacy: 'privacy-policy',
     cookie: 'cookie-policy',
     terms: 'terms-and-conditions',
@@ -31,11 +31,11 @@ export const routes: Record<LangCode, Record<RouteKey, string>> = {
   it: {
     home: '',
     blog: 'blog',
-    about: 'chi-sono',
-    privacy: 'privacy-policy',
-    cookie: 'cookie-policy',
+    dictionary: 'dizionario',
+    privacy: 'informativa-sulla-privacy',
+    cookie: 'politica-sui-cookie',
     terms: 'termini-e-condizioni',
-    security: 'security-policy',
+    security: 'politica-di-sicurezza',
     'cat-autopsia': 'autopsia-dell-errore',
     'cat-sistemi': 'sistemi-di-disciplina',
     'cat-psicologia': 'psicologia-del-conflitto',
@@ -44,7 +44,7 @@ export const routes: Record<LangCode, Record<RouteKey, string>> = {
   es: {
     home: '',
     blog: 'blog',
-    about: 'sobre-mi',
+    dictionary: 'diccionario',
     privacy: 'politica-de-privacidad',
     cookie: 'politica-de-cookies',
     terms: 'terminos-y-condiciones',
@@ -57,22 +57,22 @@ export const routes: Record<LangCode, Record<RouteKey, string>> = {
 };
 
 /**
- * Genera URL localizzati.
- * Esempi:
- * - getLocalizedPath('en', 'home') → '/'
- * - getLocalizedPath('it', 'about') → '/it/chi-sono'
- * - getLocalizedPath('en', 'blog', 'my-post') → '/blog/my-post'
+ * Genera URL localizzati in base alla lingua e alla chiave rotta.
  */
 export function getLocalizedPath(lang: LangCode, key: RouteKey, slug?: string): string {
   const isDefault = lang === 'en';
   const route = routes[lang][key];
-
+  
+  // Gestione Home
   if (key === 'home') {
     return isDefault ? '/' : `/${lang}`;
   }
 
   let path = route;
-  if (slug) path += `/${slug}`;
+  if (slug) {
+    path += `/${slug}`;
+  }
 
+  // Costruzione URL finale
   return isDefault ? `/${path}` : `/${lang}/${path}`;
 }

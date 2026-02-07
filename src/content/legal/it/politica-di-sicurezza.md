@@ -1,6 +1,6 @@
 ---
 title: "Politica di Sicurezza"
-lang: "en"
+lang: "it"
 updateDate: 2026-02-07
 ---
 # PROTOCOLLO DI SICUREZZA

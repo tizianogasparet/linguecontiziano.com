@@ -1,10 +1,7 @@
 ---
-translationId: "privacy"
+title: "Política de Privacidad"
 lang: "es"
-title: "Privacy Policy"
-updateDate: 2026-01-19
+updateDate: 2026-02-07
 ---
-
-## Privacy Policy
-
-This is a placeholder text for the legal page.
+# POLÍTICA DE PRIVACIDAD
+Este sistema está diseñado para la soberanía de los datos. No recopilo, rastreo ni almaceno ninguna información personal de los visitantes. No existen bases de datos de usuarios ni herramientas de perfilado de terceros.

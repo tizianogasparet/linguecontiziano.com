@@ -1,0 +1,23 @@
+---
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map(post => {
+    // Il file id è 'it/prova.md', separiamo lang e slug
+    const [lang, ...slugParts] = post.id.split('/');
+    const slug = slugParts.join('/').replace(/\.md$/, '');
+    return {
+      params: { lang, post_slug: slug },
+      props: { post },
+    };
+  });
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+<article>
+  <h1>{post.data.title}</h1>
+  <Content />
+</article>

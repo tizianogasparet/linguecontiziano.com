@@ -1,0 +1,12 @@
+---
+// src/pages/index.astro
+// Questa renderizza il contenuto inglese direttamente sulla root
+import HomeLayout from '@/components/layout/MainLayout.astro';
+import { getEntry } from 'astro:content';
+
+const entry = await getEntry('pages', 'en/home');
+const { Content } = await entry.render();
+---
+<HomeLayout title={entry.data.title} lang="en">
+  <Content />
+</HomeLayout>

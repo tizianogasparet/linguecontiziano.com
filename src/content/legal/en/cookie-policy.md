@@ -1,10 +1,7 @@
 ---
-translationId: "privacy"
+title: "Cookie Policy"
 lang: "en"
-title: "Privacy Policy"
-updateDate: 2026-01-19
+updateDate: 2026-02-07
 ---
-
-## Privacy Policy
-
-This is a placeholder text for the legal page.
+# COOKIE POLICY
+The Monolith is "Cookie-Free". No technical, analytical, or profiling cookies are installed in the user's browser. Navigation is pure and free from persistent trackers.

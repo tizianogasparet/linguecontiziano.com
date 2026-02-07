@@ -1,6 +1,5 @@
 // astro.config.ts
 import { defineConfig } from 'astro/config';
-import node from '@astrojs/node';
 import { supportedLanguages, defaultLang } from './src/i18n/config';
 
 export default defineConfig({
@@ -14,6 +13,5 @@ export default defineConfig({
     },
   },
   integrations: [],
-  adapter: node({ mode: 'standalone' }),
   build: { inlineStylesheets: 'always' },
 });
